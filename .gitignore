@@ -107,3 +107,6 @@ ENV/
 # mypy
 .mypy_cache/
 
+# vagrant runtime stuff
+.vagrant
+ubuntu-*-cloudimg-console.log
