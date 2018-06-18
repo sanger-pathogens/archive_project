@@ -16,7 +16,7 @@ except pkg_resources.DistributionNotFound:
 	version = 'x.y.z'
 
 parser = argparse.ArgumentParser(
-	description = 'multi-locus sequence typing (MLST) from uncorrected long reads',
+	description = 'what Tim did next',
 	usage = 'MYSCRIPT [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--foo', help='Example option foo', type=InputTypes.is_foo_valid )
 parser.add_argument('--output_file', '-o', help='Output file [STDOUT]')
