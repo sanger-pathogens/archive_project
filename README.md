@@ -1,18 +1,6 @@
-# MYPROJECT
-What Tim did next
+# python-project-template 
+This repo is a template for setting up a new python project on GitHub. Please make sure to do the following when creating a new project:
 
-[![Build Status](https://travis-ci.org/trstickland/MYPROJECT.svg?branch=master)](https://travis-ci.org/trstickland/MYPROJECT)
-
-# Installation
-The only dependancy is Python3. Assuming you have python 3.3+ and pip installed, just run:
-```
-pip3 install git+git://github.com/trstickland/MYPROJECT.git
-```
-
-## Debian/Ubuntu (Trusty/Xenial)
-To install Python3 on Ubuntu, as root run:
-```
-apt-get update -qq
-apt-get install -y git python3 python3-setuptools python3-biopython python3-pip
-pip3 install git+git://github.com/trstickland/MYPROJECT.git
-```
+* Remove this README.md and rename README_template.md to README.md
+* Edit the README to suit the new project
+* Edit the years in the first line of the LICENSE file to match your project
