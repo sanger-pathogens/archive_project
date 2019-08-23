@@ -6,17 +6,21 @@ import os
 import pkg_resources
 sys.path.append('../')
 sys.path.append('./')
+
+from archive_project.get_studies import get_studies
+from archive_project.get_lanes import get_lanes
+from archive_project.get_files import get_files 
 from MYPROJECT.MYCLASS import MYCLASS
 from MYPROJECT.InputTypes import InputTypes
 
 version = ''
 try:
-	version = pkg_resources.get_distribution("MYPROJECT").version
+	version = pkg_resources.get_distribution("archive_project").version
 except pkg_resources.DistributionNotFound:
 	version = 'x.y.z'
 
 parser = argparse.ArgumentParser(
-	description = 'what Tim did next',
+	description = 'Archive nfs that isn\'t backed up or easily reproducible',
 	usage = 'MYSCRIPT [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--foo', help='Example option foo', type=InputTypes.is_foo_valid )
 parser.add_argument('--output_file', '-o', help='Output file [STDOUT]')
@@ -27,3 +31,4 @@ options = parser.parse_args()
 
 thingy = MYCLASS(options)
 thingy.run()
+#RUN MODULES 

@@ -2,7 +2,7 @@ import subprocess
 
 #create temp rsync of data folder only containing required stuff, delete once archived 
 
-class chose_files: 
+class get_files: 
 
         def __init__(self, data_path):
                 self.data_path = data_path
@@ -14,5 +14,5 @@ class chose_files:
                 #NEED SOME WAY OF FINDING THE INTERMEDIATE FILES
 
 directory = input('Directory to archive:')
-cf = chose_files(directory.strip("'"))
+cf = get_files(directory.strip("'"))
 cf.rsync_folder('*.fastq.gz','*.bam')

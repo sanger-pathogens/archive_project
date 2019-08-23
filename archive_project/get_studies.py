@@ -1,6 +1,6 @@
 import subprocess
 
-class Get_studies:
+class get_studies:
 	
 	def __init__(self, database):
 		 self.database = database.lower()
@@ -24,6 +24,6 @@ class Get_studies:
 			
 		
 db = input("Database:")
-get_stud = Get_studies(db)
+get_stud = get_studies(db)
 studies = get_stud.read_studies()
 print(studies)
