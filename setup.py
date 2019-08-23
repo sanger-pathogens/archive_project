@@ -12,14 +12,14 @@ if os.path.exists('VERSION'):
   version = open('VERSION').read().strip()
 
 setup(
-    name='MYPROJECT',
+    name='archive_project',
     version=version,
-    description='What Tim did next',
+    description='Archive nfs that isn\'t backed up or easily reproducible',
 	long_description=read('README.md'),
     packages = find_packages(),
-    author='Tim Stickland',
+    author='Kathryn Murie',
     author_email='path-help@sanger.ac.uk',
-    url='https://github.com/trstickland/MYPROJECT',
+    url='https://github.com/sanger-pathogens/archive_project/',
     scripts=glob.glob('scripts/*'),
     test_suite='nose.collector',
     tests_require=['nose >= 1.3'],
