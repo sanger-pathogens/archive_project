@@ -1,4 +1,4 @@
-# MYPROJECT
+# archive_project
 Backup the pipeline results to S3
 
 [![Build Status](https://travis-ci.org/sanger-pathogens/seroba.svg?branch=master)](https://travis-ci.org/sanger-pathogens/seroba)   
@@ -39,15 +39,10 @@ Backup the pipeline results to S3
 - A module to do the actual backup 
 
 ## Installation
-<software name> has the following dependencies:
+There are a number of ways to install <software name> and details are provided below. If you encounter an issue when installing <software name> please contact your local system administrator. If you encounter a bug please log it [here](link_to_github_issues_page) or email us at path-help@sanger.ac.uk <or appropriate tool email list e.g. iva@sanger.ac.uk>.
 
 ### Required dependencies
-List the required dependencies along with the minimal version.
-
-### Optional dependencies
-List the optional dependencies along with the minimal version.
-
-There are a number of ways to install <software name> and details are provided below. If you encounter an issue when installing <software name> please contact your local system administrator. If you encounter a bug please log it [here](link_to_github_issues_page) or email us at path-help@sanger.ac.uk <or appropriate tool email list e.g. iva@sanger.ac.uk>.
+  * Python 3.6
 
 Include installation instructions for the following where appropriate:
 

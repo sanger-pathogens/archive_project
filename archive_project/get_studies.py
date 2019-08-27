@@ -5,7 +5,7 @@ class get_studies:
 	def __init__(self, database):
 		 self.database = database.lower()
 		 
-	#Path to .ilm.studies file for specific database
+	#Create string of path to .ilm.studies file for specific database
 	def make_path(self):
 		return ('/nfs/pathnfs05/conf/' + str(self.database) +'/' +str(self.database) + '.ilm.studies')
 
