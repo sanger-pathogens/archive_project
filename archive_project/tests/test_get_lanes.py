@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import mock_open, patch, Mock
 from archive_project import get_lanes as GL
+
 '''
 class TestGet_lanes(unittest.TestCase):
 
@@ -10,8 +11,6 @@ class TestGet_lanes(unittest.TestCase):
 		#from archive_project import get_lanes
 		#archive_project.get_lanes.get_lanes.check_output = Mock()	
 			
-'''
-'''
 from archive_project import get_lanes as GL
 GL.get_lanes.pf = Mock()
 GL.get_lanes.check_output = Mock()
@@ -23,4 +22,5 @@ self.assertEqual(['data'],actual)
 
 if __name__ == '__main__':
         unittest.main()
+
 '''

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import mock_open, patch  
 from archive_project import get_studies as GS
-
+'''
 class TestGet_studies(unittest.TestCase):
 
 	def setUp(self):
@@ -33,3 +33,4 @@ class TestGet_studies(unittest.TestCase):
 if __name__ == '__main__':
 	unittest.main()
 
+'''

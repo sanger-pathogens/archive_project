@@ -21,7 +21,7 @@ class get_lanes:
 			return data 		
 	'''
 '''
-study = input("Study name:")
+
 gl = get_lanes(study)
 data = gl.pf_data()
 '''
