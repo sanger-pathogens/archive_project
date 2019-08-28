@@ -7,12 +7,14 @@ class get_lanes:
 	
 	def pf_data(self):
 
-		data = check_output(["pf", "data", "-t", "study", "-i", self.study])
+		data = check_output(["pf", "data", "-t", "study", "-i", self.study])#.decode('ascii').splitlines()
+		print(data)
 		return data
+
+
 	'''
 	def pf_data(self):
-		data = check_output(["pf", "data", "-t", "study", "-i", self.study])
-		data = data.decode('ascii').splitlines()
+		data = check_output(["pf", "data", "-t", "study", "-i", self.study]).decode('ascii').splitlines()
 		if len(data) == 0:
 			print('Unknown study or no data associated with study')
 			return None 
@@ -20,8 +22,7 @@ class get_lanes:
 			print(data)
 			return data 		
 	'''
-'''
-
+study =
 gl = get_lanes(study)
 data = gl.pf_data()
-'''
+
