@@ -5,37 +5,26 @@ from archive_project import get_lanes as GL
 
 
 class TestGet_lanes(unittest.TestCase):
-	'''
-	@mock.patch('archive_project.get_lanes.check_output')
-	def test_pf_data(self,mock_query: unittest.mock.Mock):
-		lane_class = GL.get_lanes("study")
-		actual = lane_class.pf_data()
-		mock_query.assert_called_once_with(['pf', 'data', '-t', 'study', '-i', 'study'])
-		
-		actual = lane_class.check_output.return_value = ['data']
-		self.assertEqual(['data'],actual)
-		'''
+
 	def test_pf_data(self):
-		with mock.patch('archive_project.get_lanes.check_output', return_value='list') as co:
+		
+		#for study that exists 
+		data_list = b"""/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/viral/metagenome/TRACKING/5547/ICUVIRAL7690100/SLX/22628838/27984_4#1\n
+		/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/viral/metagenome/TRACKING/5547/ICUVIRAL7690101/SLX/22628850/27984_4#2\n 
+		/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/viral/metagenome/TRACKING/5547/ICUVIRAL7690102/SLX/22628862/27984_4#3\n
+		/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/viral/metagenome/TRACKING/5547/ICUVIRAL7690103/SLX/22628874/27984_4#4\n"""
+		with mock.patch('archive_project.get_lanes.check_output', return_value=data_list) as co:
 			lane_class = GL.get_lanes("study")
 			actual = lane_class.pf_data()
-			co.assert_called_once_with(['pf', 'data', '-t', 'study', '-i', 'study'])
-	'''
-	actual = self.database1.read_studies() #Run the function to read studies with prokaryotes as database 
-		_file.assert_called_once_with(self.prok_path) #Check was run with correct file path
-		expected = ['data1', 'data2', 'data3']
-		self.assertEqual(expected,actual) #check output as expected
-	'''
-'''
-
-GL.get_lanes.pf = Mock()
-GL.get_lanes.check_output = Mock()
-lane_class = GL.get_lanes('study')
-
-actual = lane_class.check_output.return_value = ['data']
-self.assertEqual(['data'],actual)
-
-'''
+		co.assert_called_once_with(['pf', 'data', '-t', 'study', '-i', 'study']) #check_output called correctly 
+		expected = data_list.decode('ascii').splitlines() 
+		self.assertEqual(expected,actual) #output of function as expected
+		
+		#For study that doesn't exits or had no data
+		with mock.patch('archive_project.get_lanes.check_output', return_value=b'') as co:
+			lane_class = GL.get_lanes("study")
+			actual = lane_class.pf_data()
+		self.assertEqual(None,actual) #output as expected 
+		
 if __name__ == '__main__':
         unittest.main()
-dbxref
