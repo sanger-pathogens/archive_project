@@ -15,8 +15,3 @@ class get_lanes:
 			print(data)
 			return data 		
 
-'''
-gl = get_lanes(study)
-data = gl.pf_data()
-
-'''

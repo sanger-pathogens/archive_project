@@ -18,12 +18,6 @@ class get_studies:
 				studies = [line.rstrip('\n') for line in f] #read study names
 				return studies
 		except FileNotFoundError:
-			print('Unknown Database')
+			print('Unknown Database:', self.database)
 			return None 
 		
-'''		
-db = input("Database:")
-get_stud = get_studies(db)
-studies = get_stud.read_studies()
-print(studies)
-'''

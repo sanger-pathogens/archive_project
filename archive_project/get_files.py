@@ -12,7 +12,9 @@ class get_files:
                 subprocess.call(['mkdir', new_path])
                 subprocess.call(['rsync', '-avz', '--exclude', exclude1,'--exclude',exclude2, self.data_path, new_path])
                 #NEED SOME WAY OF FINDING THE INTERMEDIATE FILES
-				
+		
+'''		
 directory = input('Directory to archive:')
 cf = get_files(directory.strip("'"))
 cf.rsync_folder('*.fastq.gz','*.bam')
+'''
