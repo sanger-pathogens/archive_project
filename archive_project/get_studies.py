@@ -20,8 +20,7 @@ class get_studies:
 		except FileNotFoundError:
 			print('Unknown Database')
 			return None 
-
-print('hello')			
+		
 '''		
 db = input("Database:")
 get_stud = get_studies(db)

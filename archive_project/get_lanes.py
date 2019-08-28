@@ -6,7 +6,7 @@ class get_lanes:
 		self.study = study.strip("'")
 	
 	def pf_data(self):
-		print('hello')
+
 		data = check_output(["pf", "data", "-t", "study", "-i", self.study])
 		return data
 	'''
