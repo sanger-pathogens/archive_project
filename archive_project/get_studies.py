@@ -3,7 +3,7 @@ import subprocess
 class get_studies:
 	
 	def __init__(self, database):
-		 self.database = database.lower()
+		 self.database = database
 		 
 	#Create string of path to .ilm.studies file for specific database
 	def make_path(self):
@@ -14,13 +14,13 @@ class get_studies:
 		path = self.make_path()
 		#Test if path exists
 		try: 
-			f = open(path)
+			with open(path) as f:
+				studies = [line.rstrip('\n') for line in f] #read study names
+				return studies
 		except FileNotFoundError:
 			print('Unknown Database')
 			return None 
-		
-		studies = [line.rstrip('\n') for line in f]
-		return studies
+
 			
 		
 db = input("Database:")
