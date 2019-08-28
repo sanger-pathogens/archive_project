@@ -21,7 +21,7 @@ class get_studies:
 			print('Unknown Database')
 			return None 
 
-			
+print('hello')			
 '''		
 db = input("Database:")
 get_stud = get_studies(db)
