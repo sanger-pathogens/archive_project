@@ -23,10 +23,14 @@ except pkg_resources.DistributionNotFound:
 parser = argparse.ArgumentParser(
 	description = 'Archive nfs that isn\'t backed up or easily reproducible',
 	usage = 'MYSCRIPT [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('database', metavar='d', type=str, nargs=1, help='database to be archived')
+parser.add_argument('database',  metavar='d', type=str, nargs=1, help='database to be archived')
+parser.add_argument('--version', action='version')
+
+
 
 options = parser.parse_args()
 
+'''
 study_find = get_studies(options) 
 studies = study_find.read_studies()
 if studies is not None: 
@@ -38,3 +42,4 @@ if studies is not None:
 				file_find = get_files(path)
 				#output rsync folder and then put into function to backup 
 
+'''
