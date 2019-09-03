@@ -33,6 +33,7 @@ Backup the pipeline results to S3
   * [Further Information](#further-information)
 
 ## Introduction
+- A module which checks if a bucket for the database already exists on S3 and, if not, creates one 
 - A module to find all of the studies for a given database 
 - A module to find the paths to the data for each study 
 - A module to filter out files that do not need to be archived 
