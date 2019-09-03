@@ -18,12 +18,12 @@ except pkg_resources.DistributionNotFound:
 
 parser = argparse.ArgumentParser(
 	description = 'Archive nfs that isn\'t backed up or easily reproducible',
-	usage = 'MYSCRIPT [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+	usage = 'archive_2S3 [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('database',  metavar='d', type=str, nargs=1, help='database to be archived')
 parser.add_argument('--version', action='version', version=version)
 
-options = parser.parse_args()
+args = parser.parse_args()
 
-run_backup2S3 = run_backup(database)
+run_backup2S3 = run_backup(args.database)
 run_backup2S3.run()
 
