@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import argparse
 import sys
 import os
@@ -8,10 +7,7 @@ import pkg_resources
 sys.path.append('../')
 sys.path.append('./')
 
-from archive_project.get_studies import get_studies
-from archive_project.get_lanes import get_lanes
-from archive_project.get_files import get_files 
-#from MYPROJECT.MYCLASS import MYCLASS
+from archive_project.run_backup import run_backup
 
 
 version = ''
@@ -26,20 +22,8 @@ parser = argparse.ArgumentParser(
 parser.add_argument('database',  metavar='d', type=str, nargs=1, help='database to be archived')
 parser.add_argument('--version', action='version', version=version)
 
-
-
 options = parser.parse_args()
 
-'''
-study_find = get_studies(options) 
-studies = study_find.read_studies()
-if studies is not None: 
-	for study in studies: 
-		lane_find = get_lanes(study)
-		data = lane_find.pf_data()
-		if studies is not None: 
-			for path in data: 
-				file_find = get_files(path)
-				#output rsync folder and then put into function to backup 
+run_backup2S3 = run_backup(database)
+run_backup2S3.run()
 
-'''
