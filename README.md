@@ -3,9 +3,6 @@ Backup the pipeline results to S3
 
 [![Build Status](https://travis-ci.org/sanger-pathogens/seroba.svg?branch=master)](https://travis-ci.org/sanger-pathogens/seroba)   
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-brightgreen.svg)](https://github.com/sanger-pathogens/seroba/blob/master/LICENSE)   
-[![status](https://img.shields.io/badge/MGEN-10.1099%2Fmgen.0.000056-brightgreen.svg)](http://mgen.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000186)   
-[![status](https://img.shields.io/badge/Bioinformatics-10.1093-brightgreen.svg)](https://doi.org/10.1093/bioinformatics/btw022)  
-[![status](https://img.shields.io/badge/GenomeBiology-10.1186-brightgreen.svg)](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0849-0)   
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg)](http://bioconda.github.io/recipes/seroba/README.html)  
 [![Container ready](https://img.shields.io/badge/container-ready-brightgreen.svg)](https://quay.io/repository/biocontainers/seroba)  
 [![Docker Build Status](https://img.shields.io/docker/build/sangerpathogens/seroba.svg)](https://hub.docker.com/r/sangerpathogens/seroba)  
@@ -45,22 +42,31 @@ There are a number of ways to install <software name> and details are provided b
 ### Required dependencies
   * Python 3.6
 
-Include installation instructions for the following where appropriate:
+### From source 
 
-### Linux specific instructions (Debian, Ubuntu, RedHat etc.) 
-### Mac OS
-### Bioconda
-### Homebrew/Linuxbrew
-### Docker
-### Virtual Machine
-### Galaxy
-### From Source
+Download the latest release from this github repository or clone it. Run the tests:
+	
+	python3 setup.py test
 
-### Running the tests
-Instructions on how to run the tests and check that the software has installed correctly.
+If the tests all pass, install: 
+	
+	python3 setup.py install 
+	
+Alternatively, install directly from github using:
+
+	pip3 install git+https://github.com/sanger-pathogens/archive_project.git #--user
+	
+
 
 ## Usage
-Usage/output of running the --help option for the software. After this, include an example usage of the software, the bare minimum to get up and running (like a quick start guide) and describe the required input data and output files produced. This should be brief. For more information see the website and Jupyter tutorial (add links to these if relevant).
+The installation will put a single script called archive_2S3 in your PATH. The usage is:
+
+	archive_2S3 [options]
+
+- To list the available commands and brief descriptions, just run 'archive_2S3 -h' or  'archive_2S3 -help'
+- To display the version of the program, use 'archive_2S3 --version'
+
+
 
 ## License
 <software name> is free software, licensed under [<license>](link_to_license_file_on_github).
@@ -68,13 +74,3 @@ Usage/output of running the --help option for the software. After this, include 
 ## Feedback/Issues
 Please report any issues to the [issues page](link_to_github_issues_page) or email path-help@sanger.ac.uk <or appropriate tool email list e.g. iva@sanger.ac.uk>.
 
-## Citation
-If you use this software please cite:
-<Insert citation (journal publication, bioarxiv, JOSS or github repo)>
-
-Also include any additional references that should be cited.
-
-## Further Information (optional)
-For more information on this software see:
-* [Software Web page](link_to_web_page)
-* [Jupyter notebook tutorial](https://github.com/sanger-pathogens/pathogen-informatics-training)
