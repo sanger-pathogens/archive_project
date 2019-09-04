@@ -67,7 +67,6 @@ The installation will put a single script called archive_2S3 in your PATH. The u
 - To display the version of the program, use 'archive_2S3 --version'
 
 
-
 ## License
 <software name> is free software, licensed under [<license>](link_to_license_file_on_github).
 

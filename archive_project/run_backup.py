@@ -1,7 +1,7 @@
 from archive_project.get_studies import get_studies
 from archive_project.get_lanes import get_lanes
 from archive_project.get_files import get_files 
-
+from archive_project.bucket_check import bucket_check
 
 class run_backup:
 
@@ -9,9 +9,17 @@ class run_backup:
 		self.database = database
 		
 	def run(self): 
-		study_find = get_studies(self.database) #Get all studies associated with this database
+		
+		#Find if bucket already exists on s3 for this database. If not create one 
+		find_bucket = bucket_check(self.database)
+		find_bucket.create_bucket()
+		
+		 #Get all studies associated with this database
+		study_find = get_studies(self.database)
 		studies = study_find.read_studies()
-		if studies is not None:  #If there are studies then find all lanes for each study 
+		
+		#If there are studies then find all lanes for each study
+		if studies is not None:   
 			for study in studies: 
 				lane_find = get_lanes(study) #Find paths to the data for each lane within the study 
 				data = lane_find.pf_data()
