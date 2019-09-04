@@ -1,4 +1,4 @@
-#Check if database has bucket on s3 already 
+#Check if database has bucket on s3 already, if not create one 
 
 import boto3
 s3 = boto3.resource('s3')
@@ -10,6 +10,7 @@ class bucket_check:
 		 self.bucket_name = bucket_name
 		 
 	def check_exist(self):
+		#check if bucket exists 
 		if s3.Bucket(self.bucket_name).creation_date is None: 
 			return False 
 		else: return True 
