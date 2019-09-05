@@ -15,7 +15,7 @@ class do_sync:
 		
 	def make_s3path(self):
 		path_root = str('/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/')
-		s3_path = str('s3://' + self.database + self.path.replace(path_root,'') )
+		s3_path = str('s3://' + self.database + '/' + self.path.replace(path_root,'') )
 		return s3_path
 		
 	def sync_folder(self, exclude1, exclude2, exclude3, exclude4):
@@ -24,10 +24,10 @@ class do_sync:
 	
 		subprocess.call(['aws', 's3', 'sync', self.path, s3_path, '--dryrun', '--exclude', exclude1,'--exclude', exclude2, '--exclude', exclude3, '--exclude', exclude4])
 		
-		
+'''		
 ds = do_sync('../test', 'test')
 ds.sync_folder('*.fastq.gz','*.bam','*_tmp_files/','*.sam')
-
+'''
 
 '''
 #filter the files and upload to s3 using command similar to rsync 
