@@ -46,7 +46,6 @@ class bucket_check:
 		else: 
 			return True 
 '''
-print('1')
 bc = bucket_check('test')
 bc.create_bucket()
 '''
