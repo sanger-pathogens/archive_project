@@ -13,8 +13,8 @@ class run_backup:
 	def run(self): 
 		
 		#Find if bucket already exists on s3 for this database. If not create one 
-		find_bucket = bucket_check(self.database)
-		find_bucket.create_bucket()
+		#find_bucket = bucket_check(self.database)  <-------------- uncomment when s3 fixed 
+		#find_bucket.create_bucket()
 		
 		#Get all studies associated with this database
 		study_find = get_studies(self.database)

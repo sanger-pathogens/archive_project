@@ -9,7 +9,6 @@ sys.path.append('./')
 
 from archive_project.run_backup import run_backup
 
-
 version = ''
 try:
 	version = pkg_resources.get_distribution("archive_project").version
