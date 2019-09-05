@@ -1,12 +1,14 @@
+from archive_project.bucket_check import bucket_check
 from archive_project.get_studies import get_studies
 from archive_project.get_lanes import get_lanes
 from archive_project.get_files import get_files 
-from archive_project.bucket_check import bucket_check
+
 
 class run_backup:
 
 	def __init__(self, database):
 		self.database = database
+	
 		
 	def run(self): 
 		
@@ -14,7 +16,7 @@ class run_backup:
 		find_bucket = bucket_check(self.database)
 		find_bucket.create_bucket()
 		
-		 #Get all studies associated with this database
+		#Get all studies associated with this database
 		study_find = get_studies(self.database)
 		studies = study_find.read_studies()
 		

@@ -13,11 +13,15 @@ class do_sync:
 		self.path = path
 		self.database = database
 		
-	def sync_folder(self, exclude1, exclude2, exclude3, exclude4):
-		
+	def make_s3path(self):
 		path_root = str('/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/')
 		s3_path = str('s3://' + self.database + self.path.replace(path_root,'') )
+		return s3_path
 		
+	def sync_folder(self, exclude1, exclude2, exclude3, exclude4):
+		
+		s3_path = make_s3path()
+	
 		subprocess.call(['aws', 's3', 'sync', self.path, s3_path, '--dryrun', '--exclude', exclude1,'--exclude', exclude2, '--exclude', exclude3, '--exclude', exclude4])
 		
 		
