@@ -1,20 +1,21 @@
-#Check if database has bucket on s3 already, if not create one 
-
 import boto3
+from botocore.utils import fix_s3_host
+from botocore.exceptions import ClientError
+import logging 
 
 
-   
 class bucket_check:
 	
 	def __init__(self, bucket_name):
-		 self.bucket_name = bucket_name
-		 self.s3 = boto3.resource('s3')
-		 
+		self.bucket_name = bucket_name
+		self.s3 = boto3.resource("s3", endpoint_url="https://cog.sanger.ac.uk",)
+		
 	def check_exist(self):
-		#check if bucket exists 
+		#check if bucket exists
 		if self.s3.Bucket(self.bucket_name).creation_date is None: 
-			return False 
-		else: return True 
+			return False #Bucket has never been created 
+		else:
+			return True #Bucket already exists
 	
 	def create_bucket(self, region=None):
 		"""Create an S3 bucket in a specified region if the bucket doesn't already exist
@@ -27,13 +28,13 @@ class bucket_check:
 		:return: True if bucket created, else False
 		"""
 	
-		if self.check_exist() == False:
+		if self.check_exist() == False: #Bucket doesn't exist, create one 
 			try: 
 				if region is None: 
-					s3_client = boto3.client('s3')
+					s3_client = boto3.client('s3',endpoint_url="https://cog.sanger.ac.uk")
 					s3_client.create_bucket(Bucket=self.bucket_name)
 				else: 
-					s3_client = boto3.client('s3', region_name=region)
+					s3_client = boto3.client('s3', region_name=region,endpoint_url="https://cog.sanger.ac.uk")
 					location = {'LocationConstraint': region}
 					s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=location)
 			except ClientError as e:
@@ -44,8 +45,8 @@ class bucket_check:
 			return True
 		
 		else: 
+			print('{} bucket already exists'.format(self.bucket_name))
 			return True 
-'''
-bc = bucket_check('test')
-bc.create_bucket()
-'''
+
+
+

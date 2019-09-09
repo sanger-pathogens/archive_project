@@ -3,10 +3,12 @@ from unittest import mock
 from unittest.mock import mock_open, patch, Mock 
 from archive_project import bucket_check as BC
 
-'''
+
 class TestBucket_check(unittest.TestCase):
 
 	def test_check_exist(self):
+		
+		
 		
 		with mock.patch('archive_project.bucket_check.s3.Bucket(self.bucket_name).creation_date',return_value=None) as cd: #?????
 			BC_class = BC.check_bucket("name")
@@ -22,4 +24,4 @@ class TestBucket_check(unittest.TestCase):
 
 if __name__ == '__main__':
 	unittest.main()
-'''
+
