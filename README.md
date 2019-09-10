@@ -41,6 +41,7 @@ There are a number of ways to install <software name> and details are provided b
 
 ### Required dependencies
   * Python 3.6
+  * boto3
 
 ### From source 
 

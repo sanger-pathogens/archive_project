@@ -8,11 +8,21 @@ class bucket_check:
 	
 	def __init__(self, bucket_name):
 		self.bucket_name = bucket_name
-		self.s3 = boto3.resource("s3", endpoint_url="https://cog.sanger.ac.uk",)
 		
+	def list_buckets(self):
+		# Create an S3 client
+		s3 = boto3.client('s3',endpoint_url="https://cog.sanger.ac.uk")
+		# Call S3 to list current buckets
+		response = s3.list_buckets()
+		# Get a list of all bucket names from the response
+		buckets = [bucket['Name'] for bucket in response['Buckets']]
+		for bucket in buckets:
+				print(bucket)
+				
 	def check_exist(self):
 		#check if bucket exists
-		if self.s3.Bucket(self.bucket_name).creation_date is None: 
+		s3 = boto3.resource("s3", endpoint_url="https://cog.sanger.ac.uk",)
+		if s3.Bucket(self.bucket_name).creation_date is None: 
 			return False #Bucket has never been created 
 		else:
 			return True #Bucket already exists
@@ -27,7 +37,6 @@ class bucket_check:
 		:param region: String region to create bucket in, e.g., 'us-west-2'
 		:return: True if bucket created, else False
 		"""
-	
 		if self.check_exist() == False: #Bucket doesn't exist, create one 
 			try: 
 				if region is None: 
@@ -36,7 +45,7 @@ class bucket_check:
 				else: 
 					s3_client = boto3.client('s3', region_name=region,endpoint_url="https://cog.sanger.ac.uk")
 					location = {'LocationConstraint': region}
-					s3_client.create_bucket(Bucket=bucket_name, CreateBucketConfiguration=location)
+					s3_client.create_bucket(Bucket=self.bucket_name, CreateBucketConfiguration=location)
 			except ClientError as e:
 				logging.error(e)
 				print('New bucket, {}, failed to be created'.format(self.bucket_name))
@@ -47,6 +56,5 @@ class bucket_check:
 		else: 
 			print('{} bucket already exists'.format(self.bucket_name))
 			return True 
-
 
 
