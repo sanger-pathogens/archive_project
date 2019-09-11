@@ -29,8 +29,8 @@ class do_sync:
 				s3_path = self.make_s3path(full_path)
 				with open(full_path, 'rb') as data:
 					bucket.put_object(Key=s3_path, Body=data)
-		
-	def aws_sync_folder(self, exclude1, exclude2, exclude3, exclude4):
+			
+	def aws_sync_folder(self, exclude1, exclude2, exclude3, exclude4): #<------- needs testing if it works 
 		
 		s3_path = self.make_s3path()
 		subprocess.call(['aws', 's3', 'sync', self.path, s3_path, '--dryrun', '--exclude', exclude1,'--exclude', exclude2, '--exclude', exclude3, '--exclude', exclude4])
