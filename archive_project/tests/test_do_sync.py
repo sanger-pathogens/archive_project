@@ -13,5 +13,7 @@ class TestDo_sync(unittest.TestCase):
 		sync_class = DS.do_sync(test_path,database)
 		self.assertEqual(sync_class.make_s3path(),s3_path)
 		
+	#def test_sync_folder(self):
+		
 if __name__ == '__main__':
         unittest.main()

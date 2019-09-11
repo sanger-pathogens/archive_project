@@ -20,4 +20,3 @@ class get_studies:
 		except FileNotFoundError:
 			print('Unknown Database:', self.database)
 			return None 
-		
