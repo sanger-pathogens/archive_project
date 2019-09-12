@@ -13,29 +13,51 @@ class do_sync:
 		self.path = path
 		self.database = database
 		
-	def make_s3path(self,path):
+	def make_s3path(self, data_path):
+		#path_root = str('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/') ### Need to remove 
 		path_root = str('/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/')
-		s3_path = str('s3://' + self.database + '/' + path.replace(path_root,'') )
-		return s3_path
+		s3_path = str('s3://' + self.database + '/' + data_path.replace(path_root,'') )
+		if s3_path == str('s3://' + self.database + '/' + data_path):
+			print(data_path, 'Data not from specified database or is invalid path')  
+			return None 
+		else:
+			return s3_path
+		
+	def exclusions(self, dirs, files):
+		dirs[:] = [d for d in dirs if not d.endswith('_tmp_files')]
+		ext = ['.fastq.gz','.bam','.sam']
+		files[:] = [f for f in files if not f.endswith(tuple(ext))]
+		return dirs, files 
+		
+	def get_filepaths(self):
+		file_paths = []
+		for subdir, dirs, files in os.walk(self.path):
+			print('output',self.exclusions(dirs, files))
+			dirs, files = self.exclusions(dirs, files)
+			for file in files:
+				full_path = os.path.join(subdir, file)
+				file_paths.append(full_path)
+		return file_paths 
 		
 	def boto3_upload(self):
-		#upload to s3 using boto3
 		session = boto3.Session()
 		s3 = session.resource('s3', endpoint_url="https://cog.sanger.ac.uk")
 		bucket = s3.Bucket(self.database)
-		for subdir, dirs, files in os.walk(self.path):
-			for file in files:
-				full_path = os.path.join(subdir, file)
-				s3_path = self.make_s3path(full_path)
+		file_paths = self.get_filepaths()
+		print('file_paths =',file_paths)
+		failed = []
+		for full_path in file_paths:
+			s3_path = self.make_s3path(full_path)
+			if s3_path is not None:
+				print('run',s3_path)
 				with open(full_path, 'rb') as data:
-					bucket.put_object(Key=s3_path, Body=data)
-			
-	def aws_sync_folder(self, exclude1, exclude2, exclude3, exclude4): #<------- needs testing if it works 
+						bucket.put_object(Key=s3_path, Body=data)
+			else: failed.append(full_path)
+		return failed
 		
-		s3_path = self.make_s3path()
-		subprocess.call(['aws', 's3', 'sync', self.path, s3_path, '--dryrun', '--exclude', exclude1,'--exclude', exclude2, '--exclude', exclude3, '--exclude', exclude4])
-	
-'''	
-DS = do_sync('fake_path/fake1/fake2/','fake_bucket')
+'''
+DS = do_sync('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
+#DS = do_sync('/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
 DS.boto3_upload()
 '''
+
