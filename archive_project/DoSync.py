@@ -7,12 +7,12 @@ import subprocess
 
 #/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1
 
-class do_sync: 
+class DoSync: 
 	
-	def __init__(self, path, database):
-		self.path = path
+	def __init__(self,database):
 		self.database = database
-		
+		self.failed_file = failed_file = open("failed_uploads%s.txt"%self.database,"w+") #File for database to write any failed uploads to 
+
 	def make_s3path(self, data_path):
 		#path_root = str('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/') ### Need to remove 
 		path_root = str('/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/')
@@ -29,9 +29,9 @@ class do_sync:
 		files[:] = [f for f in files if not f.endswith(tuple(ext))]
 		return dirs, files 
 		
-	def get_filepaths(self):
+	def get_filepaths(self,path):
 		file_paths = []
-		for subdir, dirs, files in os.walk(self.path):
+		for subdir, dirs, files in os.walk(path):
 			print('output',self.exclusions(dirs, files))
 			dirs, files = self.exclusions(dirs, files)
 			for file in files:
@@ -39,25 +39,26 @@ class do_sync:
 				file_paths.append(full_path)
 		return file_paths 
 		
-	def boto3_upload(self):
+	def boto3_upload(self,path):
 		session = boto3.Session()
 		s3 = session.resource('s3', endpoint_url="https://cog.sanger.ac.uk")
 		bucket = s3.Bucket(self.database)
-		file_paths = self.get_filepaths()
-		print('file_paths =',file_paths)
+		file_paths = self.get_filepaths(path)
 		failed = []
 		for full_path in file_paths:
 			s3_path = self.make_s3path(full_path)
 			if s3_path is not None:
-				print('run',s3_path)
 				with open(full_path, 'rb') as data:
 						bucket.put_object(Key=s3_path, Body=data)
-			else: failed.append(full_path)
+			else: 
+				failed.append(full_path)
+				self.failed_file.write("%s\n" % full_path) #write any that failed to file 
+		self.failed_file.close()
 		return failed
-		
+
 '''
-DS = do_sync('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
-#DS = do_sync('/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
+DS = DoSync('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
+#DS = DoSync('/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
 DS.boto3_upload()
 '''
 

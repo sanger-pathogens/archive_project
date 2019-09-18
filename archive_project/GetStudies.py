@@ -1,6 +1,6 @@
 import subprocess
 
-class get_studies:
+class GetStudies:
 	
 	def __init__(self, database):
 		 self.database = database

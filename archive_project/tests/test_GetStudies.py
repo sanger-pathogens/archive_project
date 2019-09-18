@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import mock_open, patch  
-from archive_project import get_studies as GS
+from archive_project import GetStudies as GS
 
-class TestGet_studies(unittest.TestCase):
+class TestGetStudies(unittest.TestCase):
 
 	def setUp(self):
-		self.database1 = GS.get_studies('prokaryotes')
-		self.database2 = GS.get_studies('fake')
+		self.database1 = GS.GetStudies('prokaryotes')
+		self.database2 = GS.GetStudies('fake')
 		self.prok_path = '/nfs/pathnfs05/conf/prokaryotes/prokaryotes.ilm.studies'
 	
 	def tearDown(self):
@@ -17,7 +17,7 @@ class TestGet_studies(unittest.TestCase):
 	
 	def test_read_studies_success(self):
 		#test valid file will open and read studies correctly 
-		with patch("archive_project.get_studies.open".format(__name__), 
+		with patch("archive_project.GetStudies.open".format(__name__), 
 					new=mock_open(read_data="data1\ndata2\ndata3")) as _file:
 			actual = self.database1.read_studies() #Run the function to read studies with prokaryotes as database 
 		_file.assert_called_once_with(self.prok_path) #Check was run with correct file path

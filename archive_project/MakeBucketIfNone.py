@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 import logging 
 
 
-class bucket_check:
+class MakeBucketIfNone:
 	
 	def __init__(self, bucket_name):
 		self.bucket_name = bucket_name
