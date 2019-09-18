@@ -7,7 +7,7 @@ import pkg_resources
 sys.path.append('../')
 sys.path.append('./')
 
-from archive_project.run_backup import run_backup
+from archive_project.RunBackup import RunBackup
 
 version = ''
 try:
