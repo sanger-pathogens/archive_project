@@ -49,17 +49,17 @@ class TestRunBackup(unittest.TestCase):
 			return [fake_failed1,fake_failed_2]
 			
 	def test_run_make_new_database(self):
-		actual = RunBackup(self.database_1, self.mock_make_bucket_ifnone, self.mock_get_study, self.do_sync_factory, get_lane=self.mock_lane_for_study)
+		actual = RunBackup(self.database_1, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
 		actual.run()
 		self.do_sync_factory.assert_called_once_with(self.database_1,self.mock_lane_1[0])
 		
 	def test_run_database_already_exists(self):
-		actual = RunBackup(self.database_2, self.mock_make_bucket_ifnone, self.mock_get_study, self.do_sync_factory, get_lane=self.mock_lane_for_study)
+		actual = RunBackup(self.database_2, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
 		actual.run()
 		self.do_sync_factory.assert_called_once_with(self.database_2,self.mock_lane_1[0])
 		
 	def test_run_database_study_is_none(self):
-		actual = RunBackup(self.database_3, self.mock_make_bucket_ifnone, self.mock_get_study, self.do_sync_factory, get_lane=self.mock_lane_for_study)
+		actual = RunBackup(self.database_3, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
 		actual.run()
 		self.do_sync_factory.assert_not_called()
 		

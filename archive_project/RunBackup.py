@@ -1,12 +1,9 @@
-from archive_project.MakeBucketIfNone import MakeBucketIfNone
-from archive_project.GetStudies import GetStudies
+from archive_project.dependencies import make_bucket_ifnone_factory, get_studies_factory, do_sync_factory 
 from archive_project.GetLanes import get_lanes
-from archive_project.DoSync import DoSync
-
 
 class RunBackup:
 
-	def __init__(self,database, make_bucket_ifnone_factory, get_studies_factory, do_sync_factory, get_lane=get_lanes):
+	def __init__(self,database, make_bucket_ifnone_factory=make_bucket_ifnone_factory, get_studies_factory=get_studies_factory, get_lane=get_lanes, do_sync_factory=do_sync_factory):
 		self.database = database
 		self.make_bucket_ifnone_factory = make_bucket_ifnone_factory
 		self.get_studies_factory = get_studies_factory
@@ -25,3 +22,5 @@ class RunBackup:
 					for path in data: #Upload files that meet criteria for each path
 						self.do_sync_factory(self.database,path)
 						
+
+	

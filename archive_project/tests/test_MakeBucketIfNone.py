@@ -1,5 +1,4 @@
 import unittest
-from moto import mock_s3
 from unittest import mock
 from unittest.mock import mock_open, patch, Mock, MagicMock,call
 from archive_project import MakeBucketIfNone as BC
