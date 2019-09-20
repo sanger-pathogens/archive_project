@@ -11,8 +11,8 @@ class DoSync:
 	
 	def __init__(self,database):
 		self.database = database
-		self.failed_file = failed_file = open("failed_uploads%s.txt"%self.database,"w+") #File for database to write any failed uploads to 
-
+		self.failed_file = open("failed_uploads_%s.txt"%self.database,"w+") #File for database to write any failed uploads to 
+		
 	def make_s3path(self, data_path):
 		#path_root = str('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/') ### Need to remove 
 		path_root = str('/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/')
