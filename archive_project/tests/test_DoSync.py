@@ -56,17 +56,18 @@ class TestDoSync(unittest.TestCase):
 				with patch("archive_project.DoSync.DoSync.make_s3path", return_value=return_paths) as make_newpath: 
 					session.resource.return_value = s3
 					s3.Bucket.return_value = bucket
-					with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3")) as _file:
+					with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3")) as _file1:
 						temp_dir_class = DS.DoSync(self.database)
-						_file.assert_called_once_with("failed_uploads%s.txt"%self.database,"w+")
-						with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3")) as _file:
+						_file1.assert_called_once_with("failed_uploads_%s.txt"%self.database,"w+")
+						with patch("archive_project.DoSync.open".format(__name__)) as _file2:
 							actual = temp_dir_class.boto3_upload(self.tempdir.path)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
-		_file.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'), 'rb')
+		_file2.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'), 'rb')
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))
 		get_fp.assert_called_once_with(self.tempdir.path)
 		self.assertEqual([],actual)
-		
+		os.remove("failed_uploads_%s.txt"%self.database)
+	
 	def test_boto3_upload_None(self):
 		session = MagicMock()
 		s3 = MagicMock()
@@ -77,12 +78,15 @@ class TestDoSync(unittest.TestCase):
 				with patch("archive_project.DoSync.DoSync.make_s3path", return_value=None) as make_newpath: 
 					session.resource.return_value = s3
 					s3.Bucket.return_value = bucket
-					temp_dir_class = DS.DoSync(self.database)
-					actual = temp_dir_class.boto3_upload(self.tempdir.path,)
+					with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3")) as _file:
+						temp_dir_class = DS.DoSync(self.database)
+						_file.assert_called_once_with("failed_uploads_%s.txt"%self.database,"w+")
+						actual = temp_dir_class.boto3_upload(self.tempdir.path,)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))
 		get_fp.assert_called_once_with(self.tempdir.path)
 		self.assertEqual(return_paths,actual)
+		os.remove("failed_uploads_%s.txt"%self.database)
 
 if __name__ == '__main__':
         unittest.main()
