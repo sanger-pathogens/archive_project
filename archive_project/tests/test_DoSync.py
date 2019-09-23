@@ -56,10 +56,10 @@ class TestDoSync(unittest.TestCase):
 				with patch("archive_project.DoSync.DoSync.make_s3path", return_value=return_paths) as make_newpath: 
 					session.resource.return_value = s3
 					s3.Bucket.return_value = bucket
-					with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3")) as _file1:
+					with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3"), create=True) as _file1:
 						temp_dir_class = DS.DoSync(self.database)
 						_file1.assert_called_once_with("failed_uploads_%s.txt"%self.database,"w+")
-						with patch("archive_project.DoSync.open".format(__name__)) as _file2:
+						with patch("archive_project.DoSync.open".format(__name__), create=True) as _file2:
 							actual = temp_dir_class.boto3_upload(self.tempdir.path)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
 		_file2.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'), 'rb')
@@ -78,7 +78,7 @@ class TestDoSync(unittest.TestCase):
 				with patch("archive_project.DoSync.DoSync.make_s3path", return_value=None) as make_newpath: 
 					session.resource.return_value = s3
 					s3.Bucket.return_value = bucket
-					with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3")) as _file:
+					with patch("archive_project.DoSync.open".format(__name__), new=mock_open(read_data="data1\ndata2\ndata3"), create=True) as _file:
 						temp_dir_class = DS.DoSync(self.database)
 						_file.assert_called_once_with("failed_uploads_%s.txt"%self.database,"w+")
 						actual = temp_dir_class.boto3_upload(self.tempdir.path,)

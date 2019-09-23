@@ -18,7 +18,7 @@ class TestGetStudies(unittest.TestCase):
 	def test_read_studies_success(self):
 		#test valid file will open and read studies correctly 
 		with patch("archive_project.GetStudies.open".format(__name__), 
-					new=mock_open(read_data="data1\ndata2\ndata3")) as _file:
+					new=mock_open(read_data="data1\ndata2\ndata3"), create=True) as _file:
 			actual = self.database1.read_studies() #Run the function to read studies with prokaryotes as database 
 		_file.assert_called_once_with(self.prok_path) #Check was run with correct file path
 		expected = ['data1', 'data2', 'data3']
