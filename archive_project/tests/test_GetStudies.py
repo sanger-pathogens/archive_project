@@ -5,7 +5,7 @@ from archive_project.GetStudies import get_studies
 class TestGetStudies(unittest.TestCase):
 
 	def setUp(self):
-		self.prok_path = '/nfs/pathnfs05/conf/prokaryotes/prokaryotes.ilm.studies'
+		self.prok_path = 'fake_path/prokaryotes.ilm.studies'
 	
 	def tearDown(self):
 		pass 
