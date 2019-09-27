@@ -5,18 +5,17 @@ import boto3
 import os
 import subprocess
 
-#/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1
 
 class DoSync: 
 	
-	def __init__(self,database):
+	def __init__(self, database, bucket_name, data_root):
 		self.database = database
+		self.bucket_name = bucket_name 
+		self.data_root = data_root
 		self.failed_file = open("failed_uploads_%s.txt"%self.database,"w+") #File for database to write any failed uploads to 
 		
 	def make_s3path(self, data_path):
-		#path_root = str('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/') ### Need to remove 
-		path_root = str('/lustre/scratch118/infgen/pathogen/pathpipe/' + self.database + '/seq-pipelines/')
-		s3_path = str('s3://' + self.database + '/' + data_path.replace(path_root,'') )
+		s3_path = str('s3://' + self.database + '/' + data_path.replace(self.data_root,'') )
 		if s3_path == str('s3://' + self.database + '/' + data_path):
 			print(data_path, 'Data not from specified database or is invalid path')  
 			return None 
@@ -29,9 +28,9 @@ class DoSync:
 		files[:] = [f for f in files if not f.endswith(tuple(ext))]
 		return dirs, files 
 		
-	def get_filepaths(self,path):
+	def get_filepaths(self,data_path):
 		file_paths = []
-		for subdir, dirs, files in os.walk(path):
+		for subdir, dirs, files in os.walk(data_path):
 			print('output',self.exclusions(dirs, files))
 			dirs, files = self.exclusions(dirs, files)
 			for file in files:
@@ -39,11 +38,11 @@ class DoSync:
 				file_paths.append(full_path)
 		return file_paths 
 		
-	def boto3_upload(self,path):
+	def boto3_upload(self,data_path):
 		session = boto3.Session()
 		s3 = session.resource('s3', endpoint_url="https://cog.sanger.ac.uk")
-		bucket = s3.Bucket(self.database)
-		file_paths = self.get_filepaths(path)
+		bucket = s3.Bucket(self.bucket_name)
+		file_paths = self.get_filepaths(data_path)
 		failed = []
 		for full_path in file_paths:
 			s3_path = self.make_s3path(full_path)
@@ -56,9 +55,4 @@ class DoSync:
 		self.failed_file.close()
 		return failed
 
-'''
-DS = DoSync('../../../../Documents/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
-#DS = DoSync('/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/','prokaryotes')
-DS.boto3_upload()
-'''
 
