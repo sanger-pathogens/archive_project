@@ -26,4 +26,4 @@ parser.add_argument('--data_root', metavar='r',type=str, nargs=1,help='root of d
 parser.add_argument('--version', action='version', version=version)
 
 args = parser.parse_args()
-RunBackup(args.type, args.id, args.database, args.bucket_name, args.data_root).run()
+RunBackup(args.type[0], args.id, args.database[0], args.bucket_name[0], args.data_root[0]).run()
