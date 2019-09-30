@@ -18,11 +18,11 @@ except pkg_resources.DistributionNotFound:
 parser = argparse.ArgumentParser(
 	description = 'Archive nfs that isn\'t backed up or easily reproducible',
 	usage = 'archive_2S3 [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('type',metavar='t',type=str, nargs=1, help='ID type. Use "file" to read IDs from file [Required; Possible values: file, studies]')
-parser.add_argument('id',metavar='i',type=str,nargs=1, help='study names or file containing list of studies')
-parser.add_argument('database',  metavar='d', type=str, nargs=1, help='database containing studies to be archived')
-parser.add_argument('bucket_name',  metavar='b', type=str, nargs=1, help='bucket to backup data to')
-parser.add_argument('data_root', metavar='r',type=str, nargs=1,help='root of data to be removed when uploading to s3. Typically /lustre/scratch118/infgen/pathogen/pathpipe/<database>/seq-pipelines/')
+parser.add_argument('--type',metavar='t',type=str, nargs=1, help='ID type. Use "file" to read IDs from file [Required; Possible values: file, studies]')
+parser.add_argument('--id',metavar='i',type=str,nargs=1, help='study names or file containing list of studies')
+parser.add_argument('--database',  metavar='d', type=str, nargs=1, help='database containing studies to be archived')
+parser.add_argument('--bucket_name',  metavar='b', type=str, nargs=1, help='bucket to backup data to')
+parser.add_argument('--data_root', metavar='r',type=str, nargs=1,help='root of data to be removed when uploading to s3. Typically /lustre/scratch118/infgen/pathogen/pathpipe/<database>/seq-pipelines/')
 parser.add_argument('--version', action='version', version=version)
 
 args = parser.parse_args()

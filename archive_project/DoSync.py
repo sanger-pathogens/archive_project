@@ -48,7 +48,7 @@ class DoSync:
 			s3_path = self.make_s3path(full_path)
 			if s3_path is not None:
 				with open(full_path, 'rb') as data:
-						bucket.put_object(Key=s3_path, Body=data)
+						bucket.put_object(Key=full_path.replace(self.data_root,'') , Body=data)
 			else: 
 				failed.append(full_path)
 				self.failed_file.write("%s\n" % full_path) #write any that failed to file 
