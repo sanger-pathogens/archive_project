@@ -15,8 +15,8 @@ class DoSync:
 		self.failed_file = open("failed_uploads_%s.txt"%self.database,"w+") #File for database to write any failed uploads to 
 		
 	def make_s3path(self, data_path):
-		s3_path = str('s3://' + self.database + '/' + data_path.replace(self.data_root,'') )
-		if s3_path == str('s3://' + self.database + '/' + data_path):
+		s3_path = str('s3://' + self.bucket_name + '/' + data_path.replace(self.data_root,'') )
+		if s3_path == str('s3://' + self.bucket_name + '/' + data_path):
 			print(data_path, 'Data not from specified database or is invalid path')  
 			return None 
 		else:
