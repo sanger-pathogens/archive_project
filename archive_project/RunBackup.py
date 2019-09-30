@@ -30,5 +30,5 @@ class RunBackup:
 				print(data)
 				if data is not None: #Check data exists for the study 
 					for path in data: #Upload files that meet criteria for each path
-						self.sync_2s3(self.database,path)
+						self.sync_2s3(self.database, self.bucket_name, self.data_root, path)
 						

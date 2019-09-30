@@ -6,9 +6,7 @@ def make_bucket_ifnone_factory(bucket_name):
 	MB = MakeBucketIfNone(bucket_name)
 	return MB.create_bucket()
 
-def do_sync_factory(database,path):
-	dS = DoSync(database)
+def do_sync_factory(database, bucket_name, root, path):
+	dS = DoSync(database, bucket_name, root)
 	return DS.boto3_upload(path)
 	
-	
-
