@@ -18,12 +18,12 @@ except pkg_resources.DistributionNotFound:
 parser = argparse.ArgumentParser(
 	description = 'Archive nfs that isn\'t backed up or easily reproducible',
 	usage = 'archive_2S3 [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--type'       ,'-t', metavar='t', type=str, nargs=1, help='ID type. Use "file" to read IDs from file [Required; Possible values: file, studies]')
-parser.add_argument('--id'         ,'-i', metavar='i', type=str, nargs=1, help='study names or file containing list of studies, seprated by a comma')
-parser.add_argument('--database'   ,'-d', metavar='d', type=str, nargs=1, help='database containing studies to be archived')
-parser.add_argument('--bucket_name','-b', metavar='b', type=str, nargs=1, help='bucket to backup data to')
-parser.add_argument('--data_root'  ,'-r', metavar='r', type=str, nargs=1, help='root of data to be removed when uploading to s3. Typically /lustre/scratch118/infgen/pathogen/pathpipe/<database>/seq-pipelines/')
-parser.add_argument('--failures'   ,'-f', metavar='f', type=str, nargs=1, help='output file to write any failed lanes to')
+parser.add_argument('--type'       ,'-t', type=str, required=True, help='ID type. Use "file" to read IDs from file [Required; Possible values: file, studies]')
+parser.add_argument('--id'         ,'-i', type=str, required=True, help='study names or file containing list of studies, seprated by a comma')
+parser.add_argument('--database'   ,'-d', type=str, required=True, help='database containing studies to be archived')
+parser.add_argument('--bucket_name','-b', type=str, required=True, help='bucket to backup data to')
+parser.add_argument('--data_root'  ,'-r', type=str, required=True, help='root of data to be removed when uploading to s3. Typically /lustre/scratch118/infgen/pathogen/pathpipe/<database>/seq-pipelines/')
+parser.add_argument('--failures'   ,'-f', type=str, required=True, help='output file to write any failed lanes to')
 parser.add_argument('--version'    ,'-v', action='version', version=version)
 
 args = parser.parse_args()

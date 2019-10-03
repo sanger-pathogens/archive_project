@@ -1,15 +1,15 @@
 import boto3
-from botocore.utils import fix_s3_host
 from botocore.exceptions import ClientError
 import logging 
 
 
 class MakeBucketIfNone:
-	
+	'''Checks if a bucket with the name that user has specified already exists and if not creates one'''
 	def __init__(self, bucket_name):
 		self.bucket_name = bucket_name
 		
 	def list_buckets(self):
+		'''Not used. Generates a list of the current buckets'''
 		# Create an S3 client
 		s3 = boto3.client('s3',endpoint_url="https://cog.sanger.ac.uk")
 		# Call S3 to list current buckets
@@ -20,7 +20,8 @@ class MakeBucketIfNone:
 				print(bucket)
 				
 	def check_exist(self):
-		#check if bucket exists
+		'''Checks the creation date of the bucket, if None then bucket doesn't exist 
+		and return false. Return True if bucket does exist'''
 		s3 = boto3.resource("s3", endpoint_url="https://cog.sanger.ac.uk",)
 		if s3.Bucket(self.bucket_name).creation_date is None: 
 			return False #Bucket has never been created 

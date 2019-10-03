@@ -30,17 +30,16 @@ Backup the pipeline results to S3
   * [Further Information](#further-information)
 
 ## Introduction
-- A module which checks if a bucket for the database already exists on S3 and, if not, creates one 
-- A module to find all of the studies for a given database 
-- A module to find the paths to the data for each study 
-- A module to filter out files that do not need to be archived 
-- A module to do the actual backup 
+- A module which checks if a bucket for the database already exists on S3 and, if not, creates one.
+- If data type provided is a file then module reads studies from the file 
+- A module to find the paths to the lanes for each study using the pf command  
+- A module to upload files in the lane directory that are not easily reproducible (i.e. not .bam , .fastq.gz , \_tmp directory).
 
 ## Installation
 There are a number of ways to install <software name> and details are provided below. If you encounter an issue when installing <software name> please contact your local system administrator. If you encounter a bug please log it [here](link_to_github_issues_page) or email us at path-help@sanger.ac.uk <or appropriate tool email list e.g. iva@sanger.ac.uk>.
 
 ### Required dependencies
-  * Python 3.6
+  * Python 3.7
   * boto3
 
 ### From source 
@@ -66,6 +65,26 @@ The installation will put a single script called archive_2S3 in your PATH. The u
 
 - To list the available commands and brief descriptions, just run 'archive_2S3 -h' or  'archive_2S3 -help'
 - To display the version of the program, use 'archive_2S3 --version'
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --type TYPE, -t TYPE  ID type. Use "file" to read IDs from file [Required;
+                        Possible values: file, studies] (default: None)
+  --id ID, -i ID        study names or file containing list of studies,
+                        seprated by a comma (default: None)
+  --database DATABASE, -d DATABASE
+                        database containing studies to be archived (default:
+                        None)
+  --bucket_name BUCKET_NAME, -b BUCKET_NAME
+                        bucket to backup data to (default: None)
+  --data_root DATA_ROOT, -r DATA_ROOT
+                        root of data to be removed when uploading to s3.
+                        Typically /lustre/scratch118/infgen/pathogen/pathpipe/
+                        <database>/seq-pipelines/ (default: None)
+  --failures FAILURES, -f FAILURES
+                        output file to write any failed lanes to (default:
+                        None)
+  --version, -v         show program's version number and exit
 
 
 ## License
