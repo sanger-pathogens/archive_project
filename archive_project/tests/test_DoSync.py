@@ -13,9 +13,10 @@ class TestDoSync(unittest.TestCase):
 		self.database = 'prokaryotes'
 		self.s3_path = 's3://prokaryotes/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1'
 		self.root = '/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/'
-		self.sync_class = DS.DoSync(self.database,self.database,self.root)
+		with patch("archive_project.DoSync.open".format(__name__), create=True) as _file1:
+			self.sync_class = DS.DoSync(self.database,self.database,self.root)
+			self.bad_path_class = DS.DoSync(self.database,self.database,self.root)
 		self.bad_path = 'fake/path/'
-		self.bad_path_class = DS.DoSync(self.database,self.database,self.root)
 		self.tempdir = TempDirectory() 
 		self.tempdir.write('fake_file1.txt', b'some foo thing') #this file should be kept 
 		self.tempdir.write('fake_tmp_files/folder/afile.txt', b'the text') #directory to be removed
@@ -42,10 +43,11 @@ class TestDoSync(unittest.TestCase):
 		self.assertEqual(output_files, ['fake_file1.txt', 'fake_file2.txt'])
 	
 	def test_get_filepaths(self):
-		temp_dir_class = DS.DoSync(self.database,self.database,self.root)
-		file_paths = temp_dir_class.get_filepaths(self.tempdir.path,)	
-		expected = [str(self.tempdir.path +'/fake_file1.txt'), str(self.tempdir.path +'/fake_directory/fake_file2.txt')]
-		self.assertEqual(file_paths, expected)
+		with patch("archive_project.DoSync.open".format(__name__), create=True) as _file1:
+			temp_dir_class = DS.DoSync(self.database,self.database,self.root)
+			file_paths = temp_dir_class.get_filepaths(self.tempdir.path,)	
+			expected = [str(self.tempdir.path +'/fake_file1.txt'), str(self.tempdir.path +'/fake_directory/fake_file2.txt')]
+			self.assertEqual(file_paths, expected)
 	
 	def test_boto3_upload_true(self):
 		session = MagicMock()
@@ -67,7 +69,6 @@ class TestDoSync(unittest.TestCase):
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))
 		get_fp.assert_called_once_with(self.tempdir.path)
 		self.assertEqual([],actual)
-		os.remove("failed_uploads_%s.txt"%self.database)
 	
 	def test_boto3_upload_None(self):
 		session = MagicMock()
@@ -87,7 +88,6 @@ class TestDoSync(unittest.TestCase):
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))
 		get_fp.assert_called_once_with(self.tempdir.path)
 		self.assertEqual(return_paths,actual)
-		os.remove("failed_uploads_%s.txt"%self.database)
 
 if __name__ == '__main__':
         unittest.main()
