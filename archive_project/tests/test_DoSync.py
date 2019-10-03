@@ -13,9 +13,10 @@ class TestDoSync(unittest.TestCase):
 		self.database = 'prokaryotes'
 		self.s3_path = 's3://prokaryotes/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1'
 		self.root = '/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/'
+		self.output_file = "failed_uploads_%s.txt"%self.database
 		with patch("archive_project.DoSync.open".format(__name__), create=True) as _file1:
-			self.sync_class = DS.DoSync(self.database,self.database,self.root)
-			self.bad_path_class = DS.DoSync(self.database,self.database,self.root)
+			self.sync_class = DS.DoSync(self.database,self.database,self.root,self.output_file)
+			self.bad_path_class = DS.DoSync(self.database,self.database,self.root, self.output_file)
 		self.bad_path = 'fake/path/'
 		self.tempdir = TempDirectory() 
 		self.tempdir.write('fake_file1.txt', b'some foo thing') #this file should be kept 
@@ -44,7 +45,7 @@ class TestDoSync(unittest.TestCase):
 	
 	def test_get_filepaths(self):
 		with patch("archive_project.DoSync.open".format(__name__), create=True) as _file1:
-			temp_dir_class = DS.DoSync(self.database,self.database,self.root)
+			temp_dir_class = DS.DoSync(self.database,self.database,self.root,self.output_file)
 			file_paths = temp_dir_class.get_filepaths(self.tempdir.path,)	
 			expected = [str(self.tempdir.path +'/fake_file1.txt'), str(self.tempdir.path +'/fake_directory/fake_file2.txt')]
 			self.assertEqual(file_paths, expected)
@@ -60,8 +61,8 @@ class TestDoSync(unittest.TestCase):
 					session.resource.return_value = s3
 					s3.Bucket.return_value = bucket
 					with patch("archive_project.DoSync.open".format(__name__), create=True) as _file1:
-						temp_dir_class = DS.DoSync(self.database,self.database,self.root)
-						_file1.assert_called_once_with("failed_uploads_%s.txt"%self.database,"w+")
+						temp_dir_class = DS.DoSync(self.database,self.database,self.root,self.output_file)
+						_file1.assert_called_once_with(self.output_file,"w+")
 						with patch("archive_project.DoSync.open".format(__name__), create=True) as _file2:
 							actual = temp_dir_class.boto3_upload(self.tempdir.path)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
@@ -81,8 +82,8 @@ class TestDoSync(unittest.TestCase):
 					session.resource.return_value = s3
 					s3.Bucket.return_value = bucket
 					with patch("archive_project.DoSync.open".format(__name__), create=True) as _file:
-						temp_dir_class = DS.DoSync(self.database,self.database,self.root)
-						_file.assert_called_once_with("failed_uploads_%s.txt"%self.database,"w+")
+						temp_dir_class = DS.DoSync(self.database,self.database,self.root,self.output_file)
+						_file.assert_called_once_with(self.output_file,"w+")
 						actual = temp_dir_class.boto3_upload(self.tempdir.path,)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))

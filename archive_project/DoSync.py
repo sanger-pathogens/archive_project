@@ -8,11 +8,11 @@ import subprocess
 
 class DoSync: 
 	
-	def __init__(self, database, bucket_name, data_root):
+	def __init__(self, database, bucket_name, data_root, output_file):
 		self.database = database
 		self.bucket_name = bucket_name 
 		self.data_root = data_root
-		self.failed_file = open("failed_uploads_%s.txt"%self.database,"w+") #File for database to write any failed uploads to 
+		self.failed_file = open(output_file,"w+") #File for database to write any failed uploads to 
 		
 	def make_s3path(self, data_path):
 		s3_path = str('s3://' + self.bucket_name + '/' + data_path.replace(self.data_root,'') )

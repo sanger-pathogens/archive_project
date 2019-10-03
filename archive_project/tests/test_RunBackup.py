@@ -26,6 +26,7 @@ class TestRunBackup(unittest.TestCase):
 		self.root = '/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/'
 		self.type1 = 'file' 
 		self.type2 = 'studies'
+		self.output_file = "failed_uploads.txt"
 		
 	def tearDown(self):
 		pass 
@@ -61,12 +62,12 @@ class TestRunBackup(unittest.TestCase):
 	def test_run_make_new_database_withfile(self):
 		actual = RunBackup(self.type1, self.studies_file_path_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
 		actual.run()
-		self.do_sync_factory.assert_called_once_with(self.database_1,self.database_1,self.root, self.mock_lane_1[0])
+		self.do_sync_factory.assert_called_once_with(self.database_1,self.database_1,self.root, self.mock_lane_1[0],self.output_file)
 		
 	def test_run_database_already_exists_withfile(self):
 		actual = RunBackup(self.type1, self.studies_file_path_2, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
 		actual.run()
-		self.do_sync_factory.assert_called_once_with(self.database_2, self.database_2, self.root, self.mock_lane_1[0])
+		self.do_sync_factory.assert_called_once_with(self.database_2, self.database_2, self.root, self.mock_lane_1[0],self.output_file)
 		
 	def test_run_database_study_is_nonewith_file(self):
 		actual = RunBackup(self.type1, self.studies_file_path_3, self.database_3, self.database_3, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
@@ -76,12 +77,12 @@ class TestRunBackup(unittest.TestCase):
 	def test_run_make_new_database_withlist(self):
 		actual = RunBackup(self.type2, self.mock_study_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
 		actual.run()
-		self.do_sync_factory.assert_called_once_with(self.database_1,self.database_1,self.root,self.mock_lane_1[0])
+		self.do_sync_factory.assert_called_once_with(self.database_1,self.database_1,self.root,self.mock_lane_1[0],self.output_file)
 		
 	def test_run_database_already_exists_withlist(self):
 		actual = RunBackup(self.type2, self.mock_study_4, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync_factory)
 		actual.run()
-		calls = [call(self.database_2,self.database_2,self.root,self.mock_lane_1[0]), call(self.database_2,self.database_2,self.root,self.mock_lane_3[0]),call(self.database_2,self.database_2,self.root,self.mock_lane_3[1])]
+		calls = [call(self.database_2,self.database_2,self.root,self.mock_lane_1[0],self.output_file), call(self.database_2,self.database_2,self.root,self.mock_lane_3[0],self.output_file),call(self.database_2,self.database_2,self.root,self.mock_lane_3[1],self.output_file)]
 		self.do_sync_factory.assert_has_calls(calls)
 		
 	def test_run_database_study_is_none_withlist(self):
