@@ -44,7 +44,7 @@ class TestRunBackup(unittest.TestCase):
 	def mock_lane_for_study(self,study):
 		if study == self.mock_study_1[0] or study == self.mock_study_2[0]:
 			return self.mock_lane_1
-		if study == self.mock_study_3: #fake study (or study=None) and lanes is None
+		if study == self.mock_study_3: 
 			return self.mock_lane_2
 		if study == self.mock_study_4[2]:
 			return self.mock_lane_3

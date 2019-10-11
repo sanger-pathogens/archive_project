@@ -22,9 +22,9 @@ class TestMakeBucketIfNone(unittest.TestCase):
 			self.bucket.creation_date = "some date"
 			BC_class = BC.MakeBucketIfNone(self.bucketname)
 			actual = BC_class.check_exist()
-		resource.assert_called_once_with("s3", endpoint_url="https://cog.sanger.ac.uk",) #check_output called correctly 
+		resource.assert_called_once_with("s3", endpoint_url="https://cog.sanger.ac.uk",) 
 		self.s3.Bucket.assert_called_once_with(self.bucketname)
-		self.assertEqual(True,actual) #output of function as expected
+		self.assertEqual(True,actual) 
 			
 	def test_check_of_new_bucket(self):
 		with patch("boto3.resource", return_value=self.s3) as resource:
@@ -47,17 +47,6 @@ class TestMakeBucketIfNone(unittest.TestCase):
 		self.s3_client.create_bucket.assert_called_once_with(Bucket=self.bucketname)
 		self.assertEqual(True,actual)
 		
-	def test_create_new_bucket_withregion(self):
-		with patch("archive_project.MakeBucketIfNone.MakeBucketIfNone.check_exist", return_value=False) as check_func:
-			with patch("boto3.client", return_value=self.s3_client) as client:
-				self.s3_client.create_bucket.return_value = self.bucket
-				BC_class = BC.MakeBucketIfNone(self.bucketname)
-				actual = BC_class.create_bucket('region')
-		client.assert_called_once_with('s3', region_name='region',endpoint_url="https://cog.sanger.ac.uk")
-		check_func.assert_called_once_with()
-		self.s3_client.create_bucket.assert_called_once_with(Bucket=self.bucketname, CreateBucketConfiguration={'LocationConstraint': 'region'})
-		self.assertEqual(True,actual)
-		
 	def test_try_creating_existing_bucket(self):
 		with patch("archive_project.MakeBucketIfNone.MakeBucketIfNone.check_exist", return_value=True) as check_func:
 			BC_class = BC.MakeBucketIfNone(self.bucketname)
@@ -70,8 +59,8 @@ class TestMakeBucketIfNone(unittest.TestCase):
 			with patch("boto3.client", side_effect=ClientError({'Error': {'Code': 'ResourceInUseException'}}, 'create_stream')) as client:
 				self.s3_client.create_bucket.return_value = self.bucket
 				BC_class = BC.MakeBucketIfNone(self.bucketname)
-				actual = BC_class.create_bucket('region')
-		client.assert_called_once_with('s3', region_name='region',endpoint_url="https://cog.sanger.ac.uk")
+				actual = BC_class.create_bucket()
+		client.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
 		check_func.assert_called_once_with()
 		self.assertEqual(False,actual)
 		

@@ -8,7 +8,7 @@ class DoSync:
 		self.database = database
 		self.bucket_name = bucket_name 
 		self.data_root = data_root
-		self.failed_file = open(output_file,"w+") #File for database to write any failed uploads to 
+		self.failed_file = open(output_file,"w+")  
 		
 	def make_s3path(self, data_path):
 		'''Generates the path for the data to be uploaded to on s3 by excluding the root the 
@@ -56,7 +56,7 @@ class DoSync:
 						bucket.put_object(Key=full_path.replace(self.data_root,'') , Body=data)
 			else: 
 				failed.append(full_path)
-				self.failed_file.write("%s\n" % full_path) #write any that failed to file 
+				self.failed_file.write("%s\n" % full_path) 
 		self.failed_file.close()
 		return failed
 

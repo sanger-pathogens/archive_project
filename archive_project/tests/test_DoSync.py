@@ -19,13 +19,13 @@ class TestDoSync(unittest.TestCase):
 			self.bad_path_class = DS.DoSync(self.database,self.database,self.root, self.output_file)
 		self.bad_path = 'fake/path/'
 		self.tempdir = TempDirectory() 
-		self.tempdir.write('fake_file1.txt', b'some foo thing') #this file should be kept 
-		self.tempdir.write('fake_tmp_files/folder/afile.txt', b'the text') #directory to be removed
-		self.tempdir.write('fake_directory/fake_file2.txt', b'the text') #this file kept
-		self.tempdir.write('fake_directory/afile.bam', b'the text') #this file removed 
-		self.tempdir.write('fake_directory/afile.sam', b'the text') #this file removed 
-		self.tempdir.write('fake_directory/afile.fastq.gz', b'the text') #this file removed
-		self.tempdir.makedir('empty_directory') #this directory should be removed 
+		self.tempdir.write('fake_file1.txt', b'some foo thing') 
+		self.tempdir.write('fake_tmp_files/folder/afile.txt', b'the text') 
+		self.tempdir.write('fake_directory/fake_file2.txt', b'the text')
+		self.tempdir.write('fake_directory/afile.bam', b'the text')  
+		self.tempdir.write('fake_directory/afile.sam', b'the text') 
+		self.tempdir.write('fake_directory/afile.fastq.gz', b'the text') 
+		self.tempdir.makedir('empty_directory') 
 		self.tempdir_path = self.tempdir.path
 
 	def tearDown(self):
