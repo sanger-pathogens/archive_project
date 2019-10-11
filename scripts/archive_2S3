@@ -27,4 +27,4 @@ parser.add_argument('--failures'   ,'-f', type=str, required=True, help='output 
 parser.add_argument('--version'    ,'-v', action='version', version=version)
 
 args = parser.parse_args()
-RunBackup(args.type[0], args.id, args.database[0], args.bucket_name[0], args.data_root[0],output_file=args.failures[0]).run()
+RunBackup(args.type, args.id, args.database, args.bucket_name, args.data_root,output_file=args.failures).run()
