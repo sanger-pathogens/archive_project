@@ -11,15 +11,13 @@ class TestGetStudies(unittest.TestCase):
 		pass 
 	
 	def test_get_studies_success(self):
-		#test valid file will open and read studies correctly 
 		with patch("archive_project.GetStudies.open".format(__name__), mock_open(read_data="data1\ndata2\ndata3"), create=True) as _file:
-			actual = get_studies(self.prok_path) #Run the function to read studies with prokaryotes as database 
-		_file.assert_called_once_with(self.prok_path) #Check was run with correct file path
+			actual = get_studies(self.prok_path) 
+		_file.assert_called_once_with(self.prok_path) 
 		expected = ['data1', 'data2', 'data3']
-		self.assertEqual(expected,actual) #check output as expected
+		self.assertEqual(expected,actual) 
 
 	def test_get_studies_fail(self):
-		#test file that doesn't exist returns correct error 
 		mock_open.return_value = FileNotFoundError 
 		actual = get_studies(self.prok_path)
 		self.assertEqual(None, actual)
