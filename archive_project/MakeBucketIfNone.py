@@ -28,6 +28,7 @@ class MakeBucketIfNone:
 		:return: True if bucket created, else False
 		"""
 		if self.check_exist() == False:
+			print(self.bucket_name)
 			try: 
 				s3_client = boto3.client('s3',endpoint_url="https://cog.sanger.ac.uk")
 				s3_client.create_bucket(Bucket=self.bucket_name)

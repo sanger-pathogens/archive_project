@@ -61,7 +61,6 @@ class DoSync:
 			else: 
 				failed.append(full_path)
 				self.failed_file.write("%s\n" % full_path) 
-		self.failed_file.close()
 		return failed
 
 
