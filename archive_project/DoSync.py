@@ -23,7 +23,7 @@ class DoSync:
 	def exclusions(self, dirs, files):
 		'''Removes the data that doesn't need backed up'''
 		dirs[:] = [d for d in dirs if not d.endswith('_tmp_files')]
-		ext = ['.fastq.gz','.bam','.sam']
+		ext = ['.fastq.gz','.bam','.sam','.bam.bai']
 		files[:] = [f for f in files if not f.endswith(tuple(ext))]
 		return dirs, files 
 		
@@ -57,10 +57,10 @@ class DoSync:
 							bucket.put_object(Key=full_path.replace(self.data_root,'') , Body=data)
 				except: 
 					failed.append(full_path)
-					self.failed_file.write("%s\n" % full_path)
+					self.failed_file.write("%s\nfile doesn't exist or failed to be uploaded" % full_path)
 			else: 
 				failed.append(full_path)
-				self.failed_file.write("%s\n" % full_path) 
+				self.failed_file.write("%s\nS3 path failed to be created\n" % full_path) 
 		return failed
 
 
