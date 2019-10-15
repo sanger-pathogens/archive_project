@@ -41,5 +41,3 @@ class MakeBucketIfNone:
 		else: 
 			print('{} bucket already exists'.format(self.bucket_name))
 			return True 
-
-
