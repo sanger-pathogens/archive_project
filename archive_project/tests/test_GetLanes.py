@@ -33,7 +33,7 @@ class TestGetLanes(unittest.TestCase):
 	def test_pf_data_nodata(self):
 		with mock.patch('archive_project.GetLanes.check_output', return_value=b'') as co:
 			actual = get_lanes("study")
-		self.assertEqual(None,actual)
+		self.assertEqual([],actual)
 		
 if __name__ == '__main__':
         unittest.main()

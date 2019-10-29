@@ -1,12 +1,12 @@
 from archive_project.dependencies import make_bucket_ifnone_factory
 from archive_project.GetLanes import get_lanes
 from archive_project.GetStudies import get_studies
-from archive_project.DoSync import DoSync
+from archive_project.DoUpload import DoUpload
 
 class RunBackup:
 	'''Runs modules in correct order'''
 	def __init__(self,run_type, run_id, database, bucket_name, data_root, make_bucket_ifnone_factory=make_bucket_ifnone_factory, 
-		get_study_names=get_studies, get_lane=get_lanes, sync_2s3=DoSync, output_file="failed_uploads.txt"):
+		get_study_names=get_studies, get_lane=get_lanes, sync_2s3=DoUpload, output_file="failed_uploads.txt"):
 		self.run_type = run_type
 		self.run_id = run_id
 		self.database = database
@@ -36,3 +36,5 @@ class RunBackup:
 				if data is not None:  
 					for path in data:
 						syncer.boto3_upload(path)
+
+#Need sync option 

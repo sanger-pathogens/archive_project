@@ -20,7 +20,7 @@ class TestGetStudies(unittest.TestCase):
 	def test_get_studies_fail(self):
 		mock_open.return_value = FileNotFoundError 
 		actual = get_studies(self.prok_path)
-		self.assertEqual(None, actual)
+		self.assertEqual([], actual)
 		
 if __name__ == '__main__':
 	unittest.main()

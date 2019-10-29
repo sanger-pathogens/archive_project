@@ -1,7 +1,6 @@
 import boto3
 from botocore.exceptions import ClientError
-import logging 
-
+import logging
 
 class MakeBucketIfNone:
 	'''Checks if a bucket with the name that user has specified already exists and if not creates one'''
@@ -27,7 +26,7 @@ class MakeBucketIfNone:
 		:param region: String region to create bucket in, e.g., 'us-west-2'
 		:return: True if bucket created, else False
 		"""
-		if self.check_exist() == False:
+		if not self.check_exist():
 			try: 
 				s3_client = boto3.client('s3',endpoint_url="https://cog.sanger.ac.uk")
 				s3_client.create_bucket(Bucket=self.bucket_name)
@@ -40,4 +39,4 @@ class MakeBucketIfNone:
 		
 		else: 
 			print('{} bucket already exists'.format(self.bucket_name))
-			return True 
+			return True

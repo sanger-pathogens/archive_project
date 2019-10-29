@@ -6,4 +6,4 @@ def get_studies(studies_file_path):
 			return studies
 	except FileNotFoundError:
 		print('Invalid studies file')
-		return None 
+		return []
