@@ -24,7 +24,8 @@ parser.add_argument('--database'   ,'-d', type=str, required=True, help='databas
 parser.add_argument('--bucket_name','-b', type=str, required=True, help='bucket to backup data to')
 parser.add_argument('--data_root'  ,'-r', type=str, required=True, help='root of data to be removed when uploading to s3. Typically /lustre/scratch118/infgen/pathogen/pathpipe/<database>/seq-pipelines/')
 parser.add_argument('--failures'   ,'-f', type=str, required=True, help='output file to write any failed lanes to')
+parser.add_argument('--mode'       ,'-m', type=str, required=True, help='sync using s3cmd or upload using boto3')
 parser.add_argument('--version'    ,'-v', action='version', version=version)
 
 args = parser.parse_args()
-RunBackup(args.type, args.id, args.database, args.bucket_name, args.data_root,output_file=args.failures).run()
+RunBackup(args.type, args.id, args.database, args.bucket_name, args.data_root,output_file=args.failures,args.mode).run()

@@ -3,6 +3,8 @@ import os
 from os import path
 import argparse
 import pandas as pd
+from archive_project.RunCommand import runrealcmd
+
 
 class DoUpload: 
 	'''Uploads files in data_path to s3 as long as they don't fall in the
@@ -66,20 +68,11 @@ class DoUpload:
 				self.failed_file.write("%s\nS3 path failed to be created\n" % full_path) 
 		return failed
 		
-	def runrealcmd(command):
-		'''Run command in bash and wait until done to run the next one'''
-		print(str(command))
-		process = Popen(command, stdout=PIPE, shell=True, stderr=STDOUT, bufsize=1, close_fds=True)
-		for line in iter(process.stdout.readline, b''):
-			print(line.rstrip().decode('utf-8'))
-		process.stdout.close()
-		process.wait()
-		return process.returncode
-		
 	def s3_sync(self,dir_path): 
 		'''use s3cmd sync, so files already uploaded aren't re-uploaded waisting comp time'''
 		s3_path = self.make_s3path(dir_path) 
 		self.runrealcmd('s3cmd --verbose --no-preserve --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync' + dir_path + s3_path + '--progress')
+
 #Need to write end to end test - upload dir, check everything is there, then delete it. 
 #Either keep s3sync in here or move to new sync module
 #Need to add in this option to run back up 
