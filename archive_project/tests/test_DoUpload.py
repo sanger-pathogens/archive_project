@@ -1,8 +1,6 @@
 import unittest
-from unittest import mock
-from unittest.mock import mock_open, patch, Mock, MagicMock
+from unittest.mock import patch, MagicMock
 from archive_project import DoUpload as DU
-import os
 from testfixtures import TempDirectory
 
 
@@ -27,6 +25,7 @@ class TestDoUpload(unittest.TestCase):
 		self.tempdir.write('fake_directory/afile.fastq.gz', b'the text') 
 		self.tempdir.makedir('empty_directory') 
 		self.tempdir_path = self.tempdir.path
+		self.mock_runrealcmd = MagicMock()
 
 	def tearDown(self):
 		self.tempdir.cleanup()
@@ -62,7 +61,7 @@ class TestDoUpload(unittest.TestCase):
 					s3.Bucket.return_value = bucket
 					with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file1:
 						temp_dir_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
-						_file1.assert_called_once_with(self.output_file,"w+")
+						_file1.assert_called_once_with(self.output_file,"a+")
 						with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file2:
 							actual = temp_dir_class.boto3_upload(self.tempdir.path)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
@@ -83,12 +82,20 @@ class TestDoUpload(unittest.TestCase):
 					s3.Bucket.return_value = bucket
 					with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file:
 						temp_dir_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
-						_file.assert_called_once_with(self.output_file,"w+")
-						actual = temp_dir_class.boto3_upload(self.tempdir.path,)
+						_file.assert_called_once_with(self.output_file,"a+")
+						actual = temp_dir_class.boto3_upload(self.tempdir.path)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))
 		get_fp.assert_called_once_with(self.tempdir.path)
 		self.assertEqual(return_paths,actual)
+
+	def test_s3cmd_upload(self):
+		return_path = [str(self.tempdir.path + '/fake_file1.txt')]
+		with patch("archive_project.DoUpload.DoUpload.make_s3path", return_value=return_path) as make_newpath:
+					temp_dir_class = DU.DoUpload(self.database, self.database, self.root, self.output_file)
+					temp_dir_class.s3_sync(self.tempdir.path, command_runner=self.mock_runrealcmd)
+		make_newpath.assert_called_once_with(str(self.tempdir.path))
+		self.mock_runrealcmd.assert_called_once_with('s3cmd --verbose --no-preserve --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync' + str(self.tempdir.path) + str(return_path) + '--progress')
 
 if __name__ == '__main__':
         unittest.main()

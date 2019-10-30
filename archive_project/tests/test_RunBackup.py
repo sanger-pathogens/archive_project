@@ -10,10 +10,11 @@ class TestRunBackup(unittest.TestCase):
 		self.database_3 = 'database3'
 		self.mock_study_1 = ['mock_study_1']
 		self.mock_study_2 = ['mock_study_2']
-		self.mock_study_3 = None 
+		self.mock_study_3 = [] 
 		self.mock_study_4 = ['mock_study_1','mock_study_3','mock_study_5']
+		self.mock_study_5 = 47
 		self.mock_lane_1 = ['mock_lane_1']
-		self.mock_lane_2 = None
+		self.mock_lane_2 = []
 		self.mock_lane_3 = ['mock_lane_2.1','mock_lane_2.2']
 		self.do_sync = Mock() 
 		self.studies_file_path_1 = '/nfs/pathnfs05/conf/database1/database1.ilm.studies'
@@ -22,24 +23,34 @@ class TestRunBackup(unittest.TestCase):
 		self.root = '/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/'
 		self.type1 = 'file' 
 		self.type2 = 'studies'
-		self.output_file = "failed_uploads.txt"
+		self.output_file = "output.txt"
 
 	def tearDown(self):
 		pass 
 
-	def mock_make_bucket_ifnone(self,database):
+	def mock_make_bucket_ifnone(self,database,output_file):
 		if database == self.database_1:
 			return True
 		if database == self.database_2 or database ==self.database_3:
 			return False
 		
-	def mock_get_study(self,studies_file_path):
-		if studies_file_path == self.studies_file_path_1:
+	def mock_get_study(self,input_studies):
+		if input_studies == self.studies_file_path_1:
 			return self.mock_study_1
-		if studies_file_path == self.studies_file_path_2:
+		elif input_studies == self.studies_file_path_2:
 			return self.mock_study_2
-		if studies_file_path == self.studies_file_path_3:
+		elif input_studies == self.studies_file_path_3:
 			return self.mock_study_3
+		elif input_studies == self.mock_study_1:
+			return self.mock_study_1
+		elif input_studies == self.mock_study_2:
+			return self.mock_study_2
+		elif input_studies == self.mock_study_3:
+			return self.mock_study_3
+		elif input_studies == self.mock_study_4:
+			return self.mock_study_4
+		else:
+			return []
 			
 	def mock_lane_for_study(self,study):
 		if study == self.mock_study_1[0] or study == self.mock_study_2[0]:
@@ -48,76 +59,72 @@ class TestRunBackup(unittest.TestCase):
 			return self.mock_lane_2
 		if study == self.mock_study_4[2]:
 			return self.mock_lane_3
-			
-	def mock_sync_for_study(self,database,path):
-		if study == self.mock_study_1:
-			return []
-		if study == self.mock_study_2 or study == self.mock_study_3:
-			return [fake_failed1,fake_failed_2]
-			
+		else: return []
 	
-	def test_run_make_new_database_withfile_upload(self):
-		actual = RunBackup(self.type1, self.studies_file_path_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync, upload_mode='upload')
+	def test_run_make_new_database_with_file_as_upload(self):
+		actual = RunBackup(self.studies_file_path_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync, upload_mode='upload')
 		actual.run()
 		calls = [call(self.database_1,self.database_1,self.root, self.output_file),call().boto3_upload(self.mock_lane_1[0])]
 		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_database_already_exists_withfile_upload(self):
-		actual = RunBackup(self.type1, self.studies_file_path_2, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync, upload_mode='upload')
+	def test_run_database_already_exists_with_file_upload(self):
+		actual = RunBackup(self.studies_file_path_2, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync, upload_mode='upload')
 		actual.run()
 		calls = [call(self.database_2, self.database_2, self.root, self.output_file),call().boto3_upload(self.mock_lane_1[0])]
 		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_database_study_is_nonewith_file_upload(self):
-		actual = RunBackup(self.type1, self.studies_file_path_3, self.database_3, self.database_3, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync, upload_mode='upload')
+	def test_run_database_study_is_none_with_file_upload(self):
+		actual = RunBackup(self.studies_file_path_3, self.database_3, self.database_3, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync, upload_mode='upload')
 		actual.run()
-		self.do_sync.assert_not_called()
+		calls = [call(self.studies_file_path_3, self.database_3, self.database_3, self.root, self.output_file)]
 		
-	def test_run_make_new_database_withlist_upload(self):
-		actual = RunBackup(self.type2, self.mock_study_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync, upload_mode='upload')
+	def test_run_make_new_database_with_list_upload(self):
+		actual = RunBackup(self.mock_study_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync, upload_mode='upload')
 		actual.run()
 		calls = [call(self.database_1,self.database_1,self.root,self.output_file),call().boto3_upload(self.mock_lane_1[0])]
 		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_database_already_exists_withlist_upload(self):
-		actual = RunBackup(self.type2, self.mock_study_4, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync, upload_mode='upload')
+	def test_run_database_already_exists_with_list_upload(self):
+		actual = RunBackup(self.mock_study_4, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync, upload_mode='upload')
 		actual.run()
 		calls = [call(self.database_2,self.database_2,self.root,self.output_file),call().boto3_upload(self.mock_lane_1[0]),call().boto3_upload(self.mock_lane_3[0]),call().boto3_upload(self.mock_lane_3[1])]
 		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_database_study_is_none_withlist_upload(self):
-		actual = RunBackup(self.type2,self.mock_study_3, self.database_3, self.database_3, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync, upload_mode='upload')
+	def test_run_database_study_is_none_with_list_as_upload(self):
+		actual = RunBackup(self.mock_study_3, self.database_3, self.database_3, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync, upload_mode='upload')
 		actual.run()
-		self.do_sync.assert_not_called()
+		calls=[call(self.database_3, self.database_3, self.root, self.output_file)]
+		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_make_new_database_withfile_sync(self):
-		actual = RunBackup(self.type1, self.studies_file_path_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync)
+	def test_run_make_new_database_with_file_sync(self):
+		actual = RunBackup(self.studies_file_path_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync)
 		actual.run()
 		calls = [call(self.database_1,self.database_1,self.root, self.output_file),call().s3_sync(self.mock_lane_1[0])]
 		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_database_already_exists_withfile_sync(self):
-		actual = RunBackup(self.type1, self.studies_file_path_2, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync, upload_mode='sync')
+	def test_run_database_already_exists_with_file_sync(self):
+		actual = RunBackup(self.studies_file_path_2, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync, upload_mode='sync')
 		actual.run()
 		calls = [call(self.database_2, self.database_2, self.root, self.output_file),call().s3_sync(self.mock_lane_1[0])]
 		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_make_new_database_withlist_sync(self):
-		actual = RunBackup(self.type2, self.mock_study_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync)
+	def test_run_make_new_database_with_list_sync(self):
+		actual = RunBackup(self.mock_study_1, self.database_1, self.database_1, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync)
 		actual.run()
 		calls = [call(self.database_1,self.database_1,self.root,self.output_file),call().s3_sync(self.mock_lane_1[0])]
 		self.do_sync.assert_has_calls(calls)
 		
-	def test_run_database_already_exists_withlist_sync(self):
-		actual = RunBackup(self.type2, self.mock_study_4, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, self.do_sync)
+	def test_run_database_already_exists_with_list_sync(self):
+		actual = RunBackup(self.mock_study_4, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync)
 		actual.run()
 		calls = [call(self.database_2,self.database_2,self.root,self.output_file),call().s3_sync(self.mock_lane_1[0]),call().s3_sync(self.mock_lane_3[0]),call().s3_sync(self.mock_lane_3[1])]
 		self.do_sync.assert_has_calls(calls)
 
-	
-		
+	def test_run_with_study_as_integer(self):
+		actual = RunBackup(self.mock_study_5, self.database_2, self.database_2, self.root, self.mock_make_bucket_ifnone, self.mock_get_study, self.mock_lane_for_study, uploader=self.do_sync)
+		actual.run()
+		calls = [call(self.database_2, self.database_2, self.root, self.output_file)]
+		self.do_sync.assert_has_calls(calls)
 		
 if __name__ == '__main__':
         unittest.main()
-        
-#Test for sync, upload and bad mode 
