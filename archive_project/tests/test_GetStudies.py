@@ -8,7 +8,7 @@ class TestGetStudies(unittest.TestCase):
 		self.prok_path = 'fake_path/prokaryotes.ilm.studies'
 		self.list_of_studies = ['mock_study_1','mock_study_3','mock_study_5']
 
-	def tearDown(self):§
+	def tearDown(self):
 		pass 
 	
 	def test_get_studies_from_file(self):
