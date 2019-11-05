@@ -18,13 +18,13 @@ except pkg_resources.DistributionNotFound:
 parser = argparse.ArgumentParser(
 	description = 'Archive nfs that isn\'t backed up or easily reproducible',
 	usage = 'archive_2S3 [options]', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument('--type'       ,'-t', type=str, required=True, help='ID type. Use "file" to read IDs from file [Required; Possible values: file, studies]')
 parser.add_argument('--id'         ,'-i', type=str, required=True, help='study names or file containing list of studies, seprated by a comma')
 parser.add_argument('--database'   ,'-d', type=str, required=True, help='database containing studies to be archived')
 parser.add_argument('--bucket_name','-b', type=str, required=True, help='bucket to backup data to')
 parser.add_argument('--data_root'  ,'-r', type=str, required=True, help='root of data to be removed when uploading to s3. Typically /lustre/scratch118/infgen/pathogen/pathpipe/<database>/seq-pipelines/')
-parser.add_argument('--failures'   ,'-f', type=str, required=True, help='output file to write any failed lanes to')
+parser.add_argument('--output_file','-o', type=str, required=True, help='output file to write information about process to')
+parser.add_argument('--mode'       ,'-m', type=str, required=True, help='sync using s3cmd or upload using boto3')
 parser.add_argument('--version'    ,'-v', action='version', version=version)
 
 args = parser.parse_args()
-RunBackup(args.type, args.id, args.database, args.bucket_name, args.data_root,output_file=args.failures).run()
+RunBackup(args.id, args.database, args.bucket_name, args.data_root,output_file=args.output_file,args.mode).run()

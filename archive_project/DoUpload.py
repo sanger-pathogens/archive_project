@@ -1,14 +1,16 @@
-import boto3
 import os
+import boto3
+from archive_project.RunCommand import runrealcmd
 
-class DoSync: 
+class DoUpload:
+
 	'''Uploads files in data_path to s3 as long as they don't fall in the
 	exclusions criteria'''
 	def __init__(self, database, bucket_name, data_root, output_file):
 		self.database = database
 		self.bucket_name = bucket_name 
 		self.data_root = data_root
-		self.failed_file = open(output_file,"w+")  
+		self.failed_file = open(output_file,"a+")  
 		
 	def make_s3path(self, data_path):
 		'''Generates the path for the data to be uploaded to on s3 by excluding the root the 
@@ -62,5 +64,9 @@ class DoSync:
 				failed.append(full_path)
 				self.failed_file.write("%s\nS3 path failed to be created\n" % full_path) 
 		return failed
-
-
+		
+	def s3_sync(self,dir_path, command_runner = runrealcmd):
+		'''use s3cmd sync, so files already uploaded aren't re-uploaded waisting comp time'''
+		s3_path = self.make_s3path(dir_path) 
+		command_runner('s3cmd --verbose --no-preserve --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync' + str(dir_path) + str(s3_path) + '--progress')
+		#write errors to file
