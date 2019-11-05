@@ -27,4 +27,4 @@ parser.add_argument('--mode'       ,'-m', type=str, required=True, help='sync us
 parser.add_argument('--version'    ,'-v', action='version', version=version)
 
 args = parser.parse_args()
-RunBackup(args.id, args.database, args.bucket_name, args.data_root,output_file=args.output_file,mode=args.mode).run()
+RunBackup(args.id, args.database, args.bucket_name, args.data_root,output_file=args.output_file,upload_mode=args.mode).run()
