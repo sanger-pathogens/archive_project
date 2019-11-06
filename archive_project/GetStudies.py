@@ -6,11 +6,7 @@ def get_studies(studies):
                 studies_from_file = [line.rstrip('\n') for line in f]
                 return studies_from_file
         except FileNotFoundError:
-            print("This file can't be found. This will be interpretted as a list or Please enter a valid path to a file or a list of study names")
-            return []
-    elif type(studies) is list:
-        print'Studies extracted from list'
-        return studies
+            return studies
     else:
         print(type(studies), "is not a valid input type. Please enter path to a file or a list of study names")
         return []
