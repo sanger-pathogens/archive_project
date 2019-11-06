@@ -15,7 +15,9 @@ class DoUpload:
 	def make_s3path(self, data_path):
 		'''Generates the path for the data to be uploaded to on s3 by excluding the root the 
 		user specifies they want removed and adds s3:://<bucket name> to the beggining'''
-		s3_path = str('s3://' + self.bucket_name + '/' + data_path.replace(self.data_root,'') +'/' )
+		s3_path = str('s3://' + self.bucket_name + '/' + data_path.replace(self.data_root,'') )
+		if not s3_path.endswith('/'):
+			s3_path = s3_path + '/'
 		if s3_path == str('s3://' + self.bucket_name + '/' + data_path):
 			print(data_path, 'Data not from specified database or is invalid path')  
 			return None 
