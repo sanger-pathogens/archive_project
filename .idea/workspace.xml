@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ce6f6ba-d47f-4ac6-b1c4-5d454e9bbb56" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/archive_project/DoUpload.py" beforeDir="false" afterPath="$PROJECT_DIR$/archive_project/DoUpload.py" afterDir="false" />
-    </list>
+    <list default="true" id="0ce6f6ba-d47f-4ac6-b1c4-5d454e9bbb56" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,7 +55,7 @@
         <entry file="file://$PROJECT_DIR$/archive_project/DoUpload.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
-              <caret line="19" column="35" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+              <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -178,7 +176,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3968000" />
+    <option name="totallyTimeSpent" value="4057000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1089" extended-state="0" />
@@ -301,7 +299,7 @@
     <entry file="file://$PROJECT_DIR$/archive_project/DoUpload.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
-          <caret line="19" column="35" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+          <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
