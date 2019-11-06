@@ -9,7 +9,7 @@ class TestDoUpload(unittest.TestCase):
 	def setUp(self):
 		self.test_path = '/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1'
 		self.database = 'prokaryotes'
-		self.s3_path = 's3://prokaryotes/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1'
+		self.s3_path = 's3://prokaryotes/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1/'
 		self.root = '/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/'
 		self.output_file = "failed_uploads_%s.txt"%self.database
 		with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file1:
