@@ -9,7 +9,7 @@ def get_studies(studies):
             print(studies)
             print("This file can't be found. This will be interpretted as a list or Please enter a valid path to a file or a list of study names")
             print('Studies extracted from list')
-            return list(studies.split(","))
+            return list(studies)
     if type(studies) is list:
         print('Studies extracted from list')
         return studies

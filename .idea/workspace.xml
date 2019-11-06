@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ce6f6ba-d47f-4ac6-b1c4-5d454e9bbb56" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/archive_project/GetStudies.py" beforeDir="false" afterPath="$PROJECT_DIR$/archive_project/GetStudies.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -191,7 +190,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3289000" />
+    <option name="totallyTimeSpent" value="3406000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1089" extended-state="0" />
