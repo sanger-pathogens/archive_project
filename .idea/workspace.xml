@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ce6f6ba-d47f-4ac6-b1c4-5d454e9bbb56" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/archive_project/RunBackup.py" beforeDir="false" afterPath="$PROJECT_DIR$/archive_project/RunBackup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/archive_project/tests/test_RunBackup.py" beforeDir="false" afterPath="$PROJECT_DIR$/archive_project/tests/test_RunBackup.py" afterDir="false" />
-    </list>
+    <list default="true" id="0ce6f6ba-d47f-4ac6-b1c4-5d454e9bbb56" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -206,12 +203,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573204712921</updated>
-      <workItem from="1573204714339" duration="17197000" />
+      <workItem from="1573204714339" duration="17288000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21516000" />
+    <option name="totallyTimeSpent" value="21607000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="825" extended-state="6" />
