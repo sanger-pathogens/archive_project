@@ -19,7 +19,7 @@ class DoUpload:
 		if not s3_path.endswith('/'):
 			s3_path = s3_path + '/'
 		if s3_path == str('s3://' + self.bucket_name + '/' + data_path):
-			print(data_path, 'Data not from specified database or is invalid path')  
+			print(data_path, 'Data not from specified database or is invalid path\n')
 			return None 
 		else:
 			return s3_path
@@ -62,7 +62,7 @@ class DoUpload:
 							bucket.put_object(Key=full_path.replace(self.data_root,'') , Body=data)
 				except: 
 					failed.append(full_path)
-					failed_file.write("%s\nfile doesn't exist or failed to be uploaded" % full_path)
+					failed_file.write("%s\nfile doesn't exist or failed to be uploaded \n" % full_path)
 			else: 
 				failed.append(full_path)
 				failed_file.write("%s\nS3 path failed to be created\n" % full_path)
