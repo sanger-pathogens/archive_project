@@ -42,5 +42,5 @@ class RunBackup:
 					upload.s3_sync(lane)
 				else:
 					f = open(self.output_file, "a+")
-					f.write(self.mode, ' is not a valid mode. (must be "upload" or "sync")')
+					f.write(self.mode, ' is not a valid mode. (must be "upload" or "sync") \n')
 					f.close()

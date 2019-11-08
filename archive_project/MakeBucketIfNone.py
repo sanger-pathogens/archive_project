@@ -29,10 +29,10 @@ class MakeBucketIfNone:
             try:
                 s3_client = boto3.client('s3', endpoint_url="https://cog.sanger.ac.uk")
                 s3_client.create_bucket(Bucket=self.bucket_name)
-                message=('New bucket created: {}'.format(self.bucket_name))
+                message=('New bucket created: {} \n'.format(self.bucket_name))
             except ClientError as e:
                 logging.error(e)
-                message=("New bucket, {}, failed to be created".format(self.bucket_name))
+                message=("New bucket, {}, failed to be created \n".format(self.bucket_name))
         else:
-            message=('{} bucket already exists'.format(self.bucket_name))
+            message=('{} bucket already exists \n'.format(self.bucket_name))
         return message
