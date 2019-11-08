@@ -14,7 +14,7 @@ class TestMakeBucketIfNone(unittest.TestCase):
         self.s3 = MagicMock()
         self.s3_client = MagicMock()
         with patch("archive_project.MakeBucketIfNone.open".format(__name__), create=True) as _file1:
-            self.BC_class = BC.MakeBucketIfNone(self.bucket_name, 'output_file')
+            self.BC_class = BC.MakeBucketIfNone(self.bucket_name)
 
     def tearDown(self):
         pass
@@ -45,14 +45,13 @@ class TestMakeBucketIfNone(unittest.TestCase):
         client.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
         check_func.assert_called_once_with()
         self.s3_client.create_bucket.assert_called_once_with(Bucket=self.bucket_name)
-        self.BC_class.output_file.write.assert_called_once_with('New bucket created: {}'.format(self.bucket_name))
+        self.assertEqual(('New bucket created: {}'.format(self.bucket_name)),actual)
 
     def test_try_creating_existing_bucket(self):
         with patch("archive_project.MakeBucketIfNone.MakeBucketIfNone.check_exist", return_value=True) as check_func:
             actual = self.BC_class.create_bucket()
         check_func.assert_called_once_with()
-        self.BC_class.output_file.write.assert_called_once_with('{} bucket already exists'.format(self.bucket_name))
-
+        self.assertEqual(('{} bucket already exists'.format(self.bucket_name)),actual)
 
     def test_try_creating_get_error(self):
         with patch("archive_project.MakeBucketIfNone.MakeBucketIfNone.check_exist", return_value=False) as check_func:
@@ -62,8 +61,7 @@ class TestMakeBucketIfNone(unittest.TestCase):
                 actual = self.BC_class.create_bucket()
         client.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
         check_func.assert_called_once_with()
-        self.BC_class.output_file.write.assert_called_once_with("New bucket, {}, failed to be created".format(self.bucket_name))
-
+        self.assertEqual(("New bucket, {}, failed to be created".format(self.bucket_name)),actual)
 
 if __name__ == '__main__':
     unittest.main()

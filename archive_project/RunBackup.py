@@ -24,15 +24,23 @@ class RunBackup:
 	def run(self):
 		'''Makes bucket if it doesnt already exist. Reads study names if type was file. Gets the lanes for
 		each of the studies and uploads the files for each lane'''
-		self.make_bucket_ifnone_factory(self.bucket_name, self.output_file)
-		studies = self.get_study_names(self.study_names)
-		upload = self.uploader(self.database, self.bucket_name, self.data_root, self.output_file)
+		f =  open(self.output_file, "a+")
+		bucket_message = self.make_bucket_ifnone_factory(self.bucket_name)
+		print(bucket_message)
+		f.write(bucket_message)
+		studies, studies_message = self.get_study_names(self.study_names)
+		f.write(studies_message)
+		f.close()
+		upload = self.uploader(self.database, self.bucket_name, self.data_root)
 		for study in studies:
-			lanes = self.get_lane(study)
+			lanes, lanes_message = self.get_lane(study)
+			f.write(lanes_message)
 			for lane in lanes:
 				if self.mode == 'upload':
 					upload.boto3_upload(lane)
 				elif self.mode == 'sync':
 					upload.s3_sync(lane)
 				else:
-					print(self.mode, ' is not a valid mode. (must be "upload" or "sync")')
+					f = open(self.output_file, "a+")
+					f.write(self.mode, ' is not a valid mode. (must be "upload" or "sync")')
+					f.close()

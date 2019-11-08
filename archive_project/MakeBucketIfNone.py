@@ -6,9 +6,8 @@ import logging
 class MakeBucketIfNone:
     '''Checks if a bucket with the name that user has specified already exists and if not creates one'''
 
-    def __init__(self, bucket_name, output_file):
+    def __init__(self, bucket_name):
         self.bucket_name = bucket_name
-        self.output_file = open(output_file, "a+")
 
     def check_exist(self):
         '''Checks the creation date of the bucket, if None then bucket doesn't exist
@@ -30,10 +29,10 @@ class MakeBucketIfNone:
             try:
                 s3_client = boto3.client('s3', endpoint_url="https://cog.sanger.ac.uk")
                 s3_client.create_bucket(Bucket=self.bucket_name)
-                self.output_file.write('New bucket created: {}'.format(self.bucket_name))
+                message=('New bucket created: {}'.format(self.bucket_name))
             except ClientError as e:
                 logging.error(e)
-                self.output_file.write("New bucket, {}, failed to be created".format(self.bucket_name))
+                message=("New bucket, {}, failed to be created".format(self.bucket_name))
         else:
-            self.output_file.write('{} bucket already exists'.format(self.bucket_name))
-        self.output_file.close()
+            message=('{} bucket already exists'.format(self.bucket_name))
+        return message

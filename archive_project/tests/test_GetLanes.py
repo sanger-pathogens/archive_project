@@ -1,5 +1,6 @@
 import unittest
 from unittest import mock
+from unittest.mock import call
 from archive_project.GetLanes import get_lanes
 from testfixtures import TempDirectory
 
@@ -23,17 +24,22 @@ class TestGetLanes(unittest.TestCase):
 	def test_get_lanes_returns_data(self):
 		data_list = bytes(str(self.tempdir.path + '/fake_tmp_files/folder/afile.txt\n'+self.tempdir.path + '/fake_directory/fake_file2.txt\n' + 'fake_path\n'),'ascii')
 		with mock.patch('archive_project.GetLanes.check_output', return_value=data_list) as co:
-			actual = get_lanes("study")
-		co.assert_called_once_with(['pf', 'data', '-t', 'study', '-i', 'study'])  
+			actual, message = get_lanes("study")
+		co.assert_called_once_with(['pf', 'data', '-t', 'study', '-i', 'study'])
+		calls = [call(self.tempdir.path + '/fake_tmp_files/folder/afile.txt'), call(self.tempdir.path + '/fake_directory/fake_file2.txt')]
 		expected = [str(self.tempdir.path + '/fake_tmp_files/folder/afile.txt'), str(self.tempdir.path + '/fake_directory/fake_file2.txt')]
-		print(actual)
-		print(expected)
-		self.assertEqual(expected,actual) 
-		
-	def test_pf_data_nodata(self):
+		self.assertEqual(expected,actual)
+		self.assertEqual(('These paths were returned by pf, but do not actually exist', ['fake_path']),message)
+
+	def test_get_lanes_returns_nodata(self):
 		with mock.patch('archive_project.GetLanes.check_output', return_value=b'') as co:
-			actual = get_lanes("study")
+			with mock.patch('os.path.exists', return_value=True) as pe:
+				actual, message = get_lanes("study")
 		self.assertEqual([],actual)
+		pe.assert_not_called()
+		self.assertEqual(('Unknown study or no data associated with study: ', 'study'),message)
+
+
 		
 if __name__ == '__main__':
         unittest.main()

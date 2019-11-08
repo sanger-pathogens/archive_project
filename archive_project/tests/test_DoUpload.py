@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, call
 from archive_project import DoUpload as DU
 from testfixtures import TempDirectory
 
@@ -12,9 +12,6 @@ class TestDoUpload(unittest.TestCase):
 		self.s3_path = 's3://prokaryotes/Salmonella/enterica_subsp_enterica_serovar_Typhi_str_Ty2/TRACKING/5798/4316STDY6559668/SLX/17718553/20953_1#1/'
 		self.root = '/lustre/scratch118/infgen/pathogen/pathpipe/prokaryotes/seq-pipelines/'
 		self.output_file = "failed_uploads_%s.txt"%self.database
-		with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file1:
-			self.sync_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
-			self.bad_path_class = DU.DoUpload(self.database,self.database,self.root, self.output_file)
 		self.bad_path = 'fake/path/'
 		self.tempdir = TempDirectory() 
 		self.tempdir.write('fake_file1.txt', b'some foo thing') 
@@ -32,12 +29,14 @@ class TestDoUpload(unittest.TestCase):
 		pass 
 		
 	def test_make_s3path(self):
+		self.sync_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
 		self.assertEqual(self.sync_class.make_s3path(self.test_path),self.s3_path)
 		self.assertEqual(self.sync_class.make_s3path(self.bad_path),None)
 		
 	def test_exclusions(self):
 		dirs = ['fake_tmp_files', 'fake_directory1', 'fake_directory2']
 		files = ['fake_file1.txt', 'fake_file2.txt', 'fake_file.fastq.gz', 'fake_file.bam', 'fake_file.sam']
+		self.sync_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
 		output_dirs, output_files = self.sync_class.exclusions(dirs,files)
 		self.assertEqual(output_dirs, ['fake_directory1', 'fake_directory2'])
 		self.assertEqual(output_files, ['fake_file1.txt', 'fake_file2.txt'])
@@ -59,13 +58,11 @@ class TestDoUpload(unittest.TestCase):
 				with patch("archive_project.DoUpload.DoUpload.make_s3path", return_value=return_paths) as make_newpath: 
 					session.resource.return_value = s3
 					s3.Bucket.return_value = bucket
-					with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file1:
+					with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file:
 						temp_dir_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
-						_file1.assert_called_once_with(self.output_file,"a+")
-						with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file2:
-							actual = temp_dir_class.boto3_upload(self.tempdir.path)
+						actual = temp_dir_class.boto3_upload(self.tempdir.path)
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
-		_file2.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'), 'rb')
+		_file.assert_called_with(str(self.tempdir.path+'/fake_file1.txt'), 'rb')
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))
 		get_fp.assert_called_once_with(self.tempdir.path)
 		self.assertEqual([],actual)
@@ -82,8 +79,8 @@ class TestDoUpload(unittest.TestCase):
 					s3.Bucket.return_value = bucket
 					with patch("archive_project.DoUpload.open".format(__name__), create=True) as _file:
 						temp_dir_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
-						_file.assert_called_once_with(self.output_file,"a+")
 						actual = temp_dir_class.boto3_upload(self.tempdir.path)
+						_file.assert_called_once_with(self.output_file,"a+")
 		session.resource.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
 		make_newpath.assert_called_once_with(str(self.tempdir.path+'/fake_file1.txt'))
 		get_fp.assert_called_once_with(self.tempdir.path)
@@ -95,7 +92,7 @@ class TestDoUpload(unittest.TestCase):
 					temp_dir_class = DU.DoUpload(self.database, self.database, self.root, self.output_file)
 					temp_dir_class.s3_sync(self.tempdir.path, command_runner=self.mock_runrealcmd)
 		make_newpath.assert_called_once_with(str(self.tempdir.path))
-		self.mock_runrealcmd.assert_called_once_with('s3cmd --verbose --no-preserve --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync ' + str(self.tempdir.path) + ' ' + str(return_path) + ' --progress')
+		self.mock_runrealcmd.assert_called_once_with('s3cmd --verbose --no-preserve --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync ' + str(self.tempdir.path) + ' ' + str(return_path))
 
 if __name__ == '__main__':
         unittest.main()

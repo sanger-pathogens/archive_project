@@ -4,15 +4,14 @@ def get_studies(studies):
         try:
             with open(studies) as f:
                 studies_from_file = [line.rstrip('\n') for line in f]
-                return studies_from_file
+                message="Studies extracted from file"
+                return studies_from_file, message
         except FileNotFoundError:
-            print(studies)
-            print("This file can't be found. This will be interpretted as a list or Please enter a valid path to a file or a list of study names")
-            print('Studies extracted from list')
-            return list(studies.split(','))
-    if type(studies) is list:
-        print('Studies extracted from list')
-        return studies
+            message="This file can't be found. Attempt will be made to interpret as a list. If this is not intended then please enter a valid path to a file or a list of study names."
+            return list(studies.split(',')), message
+    elif type(studies) is list:
+        message="Studies extracted from list"
+        return studies, message
     else:
-        print(type(studies), "is not a valid input type. Please enter path to a file or a list of study names")
-        return []
+        message = (type(studies), "is not a valid input type. Nothing will be uploaded. Please enter path to a file or a list of study names")
+        return [], message
