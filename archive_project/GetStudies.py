@@ -4,7 +4,7 @@ def get_studies(studies):
         try:
             with open(studies) as f:
                 studies_from_file = [line.rstrip('\n') for line in f]
-                message="Studies extracted from file \n"
+                message="Studies extracted from file\n"
                 return studies_from_file, message
         except FileNotFoundError:
             message="This file can't be found. Attempt will be made to interpret as a list. If this is not intended then please enter a valid path to a file or a list of study names.\n"

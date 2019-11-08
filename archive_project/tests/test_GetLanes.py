@@ -29,7 +29,7 @@ class TestGetLanes(unittest.TestCase):
 		calls = [call(self.tempdir.path + '/fake_tmp_files/folder/afile.txt'), call(self.tempdir.path + '/fake_directory/fake_file2.txt')]
 		expected = [str(self.tempdir.path + '/fake_tmp_files/folder/afile.txt'), str(self.tempdir.path + '/fake_directory/fake_file2.txt')]
 		self.assertEqual(expected,actual)
-		self.assertEqual(('These paths were returned by pf, but do not actually exist', ['fake_path']),message)
+		self.assertEqual(('These paths were returned by pf, but do not actually exist', ['fake_path'], '\n'),message)
 
 	def test_get_lanes_returns_nodata(self):
 		with mock.patch('archive_project.GetLanes.check_output', return_value=b'') as co:
@@ -37,7 +37,7 @@ class TestGetLanes(unittest.TestCase):
 				actual, message = get_lanes("study")
 		self.assertEqual([],actual)
 		pe.assert_not_called()
-		self.assertEqual(('Unknown study or no data associated with study: ', 'study'),message)
+		self.assertEqual(('Unknown study or no data associated with study: ', "study", '\n'),message)
 
 
 		
