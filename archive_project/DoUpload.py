@@ -10,8 +10,8 @@ class DoUpload:
 		self.database = database
 		self.bucket_name = bucket_name 
 		self.data_root = data_root
-		self.failed_file = open(output_file,"a+")  
-		
+		self.output_file = output_file
+
 	def make_s3path(self, data_path):
 		'''Generates the path for the data to be uploaded to on s3 by excluding the root the 
 		user specifies they want removed and adds s3:://<bucket name> to the beggining'''
@@ -48,6 +48,7 @@ class DoUpload:
 		filepaths in directory and exclude ones that meet criteria. For each of those 
 		files create an s3 path for it to be stored at. Then upload each file to their 
 		s3 path. If file fails write it to output file that user specifies.'''
+		failed_file = open(self.output_file, "a+")
 		session = boto3.Session()
 		s3 = session.resource('s3', endpoint_url="https://cog.sanger.ac.uk")
 		bucket = s3.Bucket(self.bucket_name)
@@ -61,10 +62,11 @@ class DoUpload:
 							bucket.put_object(Key=full_path.replace(self.data_root,'') , Body=data)
 				except: 
 					failed.append(full_path)
-					self.failed_file.write("%s\nfile doesn't exist or failed to be uploaded" % full_path)
+					failed_file.write("%s\nfile doesn't exist or failed to be uploaded" % full_path)
 			else: 
 				failed.append(full_path)
-				self.failed_file.write("%s\nS3 path failed to be created\n" % full_path) 
+				failed_file.write("%s\nS3 path failed to be created\n" % full_path)
+		failed_file.close()
 		return failed
 		
 	def s3_sync(self,dir_path, command_runner = runrealcmd):
