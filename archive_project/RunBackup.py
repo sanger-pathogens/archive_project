@@ -35,7 +35,7 @@ class RunBackup:
 		for study in studies:
 			lanes, lanes_message = self.get_lane(study)
 			f = open(self.output_file, "a+")
-			f.write(lanes_message)
+			f.write(str(lanes_message))
 			f.close()
 			for lane in lanes:
 				if self.mode == 'upload':
