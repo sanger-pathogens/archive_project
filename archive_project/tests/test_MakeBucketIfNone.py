@@ -45,13 +45,13 @@ class TestMakeBucketIfNone(unittest.TestCase):
         client.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
         check_func.assert_called_once_with()
         self.s3_client.create_bucket.assert_called_once_with(Bucket=self.bucket_name)
-        self.assertEqual(('New bucket created: {}'.format(self.bucket_name)),actual)
+        self.assertEqual(('New bucket created: {}\n'.format(self.bucket_name)),actual)
 
     def test_try_creating_existing_bucket(self):
         with patch("archive_project.MakeBucketIfNone.MakeBucketIfNone.check_exist", return_value=True) as check_func:
             actual = self.BC_class.create_bucket()
         check_func.assert_called_once_with()
-        self.assertEqual(('{} bucket already exists'.format(self.bucket_name)),actual)
+        self.assertEqual(('{} bucket already exists\n'.format(self.bucket_name)),actual)
 
     def test_try_creating_get_error(self):
         with patch("archive_project.MakeBucketIfNone.MakeBucketIfNone.check_exist", return_value=False) as check_func:
@@ -61,7 +61,7 @@ class TestMakeBucketIfNone(unittest.TestCase):
                 actual = self.BC_class.create_bucket()
         client.assert_called_once_with('s3', endpoint_url="https://cog.sanger.ac.uk")
         check_func.assert_called_once_with()
-        self.assertEqual(("New bucket, {}, failed to be created".format(self.bucket_name)),actual)
+        self.assertEqual(("New bucket, {}, failed to be created\n".format(self.bucket_name)),actual)
 
 if __name__ == '__main__':
     unittest.main()
