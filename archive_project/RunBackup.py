@@ -30,9 +30,11 @@ class RunBackup:
 		f.write(bucket_message)
 		studies, studies_message = self.get_study_names(self.study_names)
 		f.write(studies_message)
+		f.close()
 		upload = self.uploader(self.database, self.bucket_name, self.data_root,self.output_file)
 		for study in studies:
 			lanes, lanes_message = self.get_lane(study)
+			f = open(self.output_file, "a+")
 			f.write(lanes_message)
 			f.close()
 			for lane in lanes:
