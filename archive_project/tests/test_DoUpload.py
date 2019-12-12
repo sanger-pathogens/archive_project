@@ -32,7 +32,8 @@ class TestDoUpload(unittest.TestCase):
 		self.sync_class = DU.DoUpload(self.database,self.database,self.root,self.output_file)
 		self.assertEqual(self.sync_class.make_s3path(self.test_path),self.s3_path)
 		self.assertEqual(self.sync_class.make_s3path(self.bad_path),None)
-		
+		self.assertEqual(self.sync_class.make_s3path('/lustre/scratch118/infgen/pathogen/pathpipe/pathogen_mgenomes_external/seq-pipelines/human/gut_metagenome/TRACKING/2/SRS584956/SLX/SRR1219326/SRR1219326'),None)
+
 	def test_exclusions(self):
 		dirs = ['fake_tmp_files', 'fake_directory1', 'fake_directory2']
 		files = ['fake_file1.txt', 'fake_file2.txt', 'fake_file.fastq.gz', 'fake_file.bam', 'fake_file.sam']
