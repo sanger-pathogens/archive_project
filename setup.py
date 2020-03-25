@@ -23,6 +23,8 @@ setup(
     tests_require=['nose >= 1.3'],
     install_requires=[
          'biopython >= 1.68',
+         'testfixtures >= 6.14.0',
+	 'boto3 >= 1.0.0', 
          #'pyfastaq >= 3.12.0'
        ],
     license='GPLv3',
