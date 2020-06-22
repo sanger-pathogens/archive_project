@@ -1,7 +1,7 @@
 # archive_project
 Backup the pipeline results to S3
 
-[![Build Status](https://travis-ci.org/sanger-pathogens/archive_project.svg?branch=master)](https://travis-ci.org/sanger-pathogens/archive_project)   
+[![Build Status](https://travis-ci.com/sanger-pathogens/archive_project.svg?branch=master)](https://travis-ci.com/sanger-pathogens/archive_project)   
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-brightgreen.svg)](https://github.com/sanger-pathogens/archive_project/blob/master/LICENSE)   
 [![codecov](https://codecov.io/gh/sanger-pathogens/archive_project/branch/master/graph/badge.svg)](https://codecov.io/gh/sanger-pathogens/archive_project) 
 
