@@ -1,50 +1,31 @@
 # archive_project
-Backup the pipeline results to S3
+Tool to back up the data produced by the Pathogen Informatics sequencing pipelines to an S3 server
 
-[![Build Status](https://travis-ci.org/sanger-pathogens/seroba.svg?branch=master)](https://travis-ci.org/sanger-pathogens/seroba)   
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-brightgreen.svg)](https://github.com/sanger-pathogens/seroba/blob/master/LICENSE)   
-[![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg)](http://bioconda.github.io/recipes/seroba/README.html)  
-[![Container ready](https://img.shields.io/badge/container-ready-brightgreen.svg)](https://quay.io/repository/biocontainers/seroba)  
-[![Docker Build Status](https://img.shields.io/docker/build/sangerpathogens/seroba.svg)](https://hub.docker.com/r/sangerpathogens/seroba)  
-[![Docker Pulls](https://img.shields.io/docker/pulls/sangerpathogens/seroba.svg)](https://hub.docker.com/r/sangerpathogens/seroba)  
-[![codecov](https://codecov.io/gh/sanger-pathogens/mlst_check/branch/master/graph/badge.svg)](https://codecov.io/gh/sanger-pathogens/mlst_check) 
+[![Build Status](https://travis-ci.com/sanger-pathogens/archive_project.svg?branch=master)](https://travis-ci.com/sanger-pathogens/archive_project)   
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-brightgreen.svg)](https://github.com/sanger-pathogens/archive_project/blob/master/LICENSE)   
+[![codecov](https://codecov.io/gh/sanger-pathogens/archive_project/branch/master/graph/badge.svg)](https://codecov.io/gh/sanger-pathogens/archive_project) 
 
-## Contents (edit as fit)
+## Contents
   * [Introduction](#introduction)
   * [Installation](#installation)
     * [Required dependencies](#required-dependencies)
-    * [Optional dependencies](#optional-dependencies)
-    * [Linux specific instructions (Debian, Ubuntu, RedHat etc\.)](#linux-specific-instructions-debian-ubuntu-redhat-etc)
-    * [Mac OS](#mac-os)
-    * [Bioconda](#bioconda)
-    * [Homebrew/Linuxbrew](#homebrewlinuxbrew)
-    * [Docker](#docker)
-    * [Virtual Machine](#virtual-machine)
-    * [Galaxy](#galaxy)
     * [From Source](#from-source)
-    * [Running the tests](#running-the-tests)
   * [Usage](#usage)
-  * [License](#license)
-  * [Feedback/Issues](#feedbackissues)
-  * [Citation](#citation)
-  * [Further Information](#further-information)
 
 ## Introduction
-- A module which checks if a bucket for the database already exists on S3 and, if not, creates one.
-- If data type provided is a file then module reads studies from the file 
-- A module to find the paths to the lanes for each study using the pf command  
-- A module to upload files in the lane directory that are not easily reproducible (i.e. not .bam , .fastq.gz , \_tmp directory).
+This software backs up data produced by the Pathogen Informatics sequencing pipelines to an S3 server, thereby automatically creating missing buckets.
+It can either take a study name or a file with a list of studies as input. The pipeline data created for the chosen study/studies is traced with  [pf](https://github.com/sanger-pathogens/Bio-Path-Find) and then uploaded/synchronized with the data on the S3 server.
+NOTE: Temporary files and files that are easily reproducible (BAM, FASTQ) are ignored to speed up the process.
 
 ## Installation
-There are a number of ways to install <software name> and details are provided below. If you encounter an issue when installing <software name> please contact your local system administrator. If you encounter a bug please log it [here](link_to_github_issues_page) or email us at path-help@sanger.ac.uk <or appropriate tool email list e.g. iva@sanger.ac.uk>.
 
 ### Required dependencies
   * Python 3.7
-  * boto3
+  * s3cmd
+  * [pf](https://github.com/sanger-pathogens/Bio-Path-Find)
 
-### From source 
-
-Download the latest release from this github repository or clone it. Run the tests:
+### From source
+Download the latest release from this GitHub repository or clone it. Run the tests:
 	
 	python3 setup.py test
 
@@ -52,21 +33,16 @@ If the tests all pass, install:
 	
 	python3 setup.py install 
 	
-Alternatively, install directly from github using:
-
-	pip3 install git+https://github.com/sanger-pathogens/archive_project.git #--user
-	
-
-
 ## Usage
 The installation will put a single script called archive_2S3 in your PATH. The usage is:
 
 	archive_2S3 [options]
 
-- To list the available commands and brief descriptions, just run 'archive_2S3 -h' or  'archive_2S3 -help'
-- To display the version of the program, use 'archive_2S3 --version'
+To list the available commands and brief descriptions, just run `archive_2S3 -h` or  `archive_2S3 --help`.
+To display the version of the program, use `archive_2S3 --version`.
+Full usage options:
 
-optional arguments:
+```
   -h, --help            show this help message and exit
   --type TYPE, -t TYPE  ID type. Use "file" to read IDs from file [Required;
                         Possible values: file, studies] (default: None)
@@ -85,11 +61,4 @@ optional arguments:
                         output file to write any failed lanes to (default:
                         None)
   --version, -v         show program's version number and exit
-
-
-## License
-<software name> is free software, licensed under [<license>](link_to_license_file_on_github).
-
-## Feedback/Issues
-Please report any issues to the [issues page](link_to_github_issues_page) or email path-help@sanger.ac.uk <or appropriate tool email list e.g. iva@sanger.ac.uk>.
-
+```
