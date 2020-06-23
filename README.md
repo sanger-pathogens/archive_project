@@ -1,5 +1,5 @@
 # archive_project
-Backup the pipeline results to S3
+Tool to back up the data produced by the Pathogen Informatics sequencing pipelines to an S3 server
 
 [![Build Status](https://travis-ci.com/sanger-pathogens/archive_project.svg?branch=master)](https://travis-ci.com/sanger-pathogens/archive_project)   
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-brightgreen.svg)](https://github.com/sanger-pathogens/archive_project/blob/master/LICENSE)   
@@ -13,19 +13,17 @@ Backup the pipeline results to S3
   * [Usage](#usage)
 
 ## Introduction
-- A module which checks if a bucket for the database already exists on S3 and, if not, creates one.
-- If data type provided is a file then module reads studies from the file 
-- A module to find the paths to the lanes for each study using the pf command  
-- A module to upload files in the lane directory that are not easily reproducible (i.e. not .bam , .fastq.gz , \_tmp directory).
+This software backs up data produced by the Pathogen Informatics sequencing pipelines to an S3 server, thereby automatically creating missing buckets.
+It can either take a study name or a file with a list of studies as input. The pipeline data created for the chosen study/studies is traced with  [pf](https://github.com/sanger-pathogens/Bio-Path-Find) and then uploaded/synchronized with the data on the S3 server. Temporary files and files that are easily reproducible (BAM, FASTQ) are ignored to speed up the process.
 
 ## Installation
 
 ### Required dependencies
   * Python 3.7
-  * boto3
+  * s3cmd
+  * [pf](https://github.com/sanger-pathogens/Bio-Path-Find)
 
-### From source 
-
+### From source
 Download the latest release from this GitHub repository or clone it. Run the tests:
 	
 	python3 setup.py test
