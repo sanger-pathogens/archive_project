@@ -14,7 +14,8 @@ Tool to back up the data produced by the Pathogen Informatics sequencing pipelin
 
 ## Introduction
 This software backs up data produced by the Pathogen Informatics sequencing pipelines to an S3 server, thereby automatically creating missing buckets.
-It can either take a study name or a file with a list of studies as input. The pipeline data created for the chosen study/studies is traced with  [pf](https://github.com/sanger-pathogens/Bio-Path-Find) and then uploaded/synchronized with the data on the S3 server. Temporary files and files that are easily reproducible (BAM, FASTQ) are ignored to speed up the process.
+It can either take a study name or a file with a list of studies as input. The pipeline data created for the chosen study/studies is traced with  [pf](https://github.com/sanger-pathogens/Bio-Path-Find) and then uploaded/synchronized with the data on the S3 server.
+NOTE: Temporary files and files that are easily reproducible (BAM, FASTQ) are ignored to speed up the process.
 
 ## Installation
 
