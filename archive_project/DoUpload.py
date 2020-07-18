@@ -75,4 +75,4 @@ class DoUpload:
 		'''use s3cmd sync, so files already uploaded aren't re-uploaded waisting comp time'''
 		s3_path = self.make_s3path(dir_path)
 		if s3_path is not None:
-			command_runner('s3cmd --verbose --no-preserve --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync ' + str(dir_path) + ' ' + str(s3_path))
+			command_runner('s3cmd --verbose --no-preserve --delete-removed --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync ' + str(dir_path) + ' ' + str(s3_path))

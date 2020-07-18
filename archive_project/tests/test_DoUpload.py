@@ -93,8 +93,7 @@ class TestDoUpload(unittest.TestCase):
 					temp_dir_class = DU.DoUpload(self.database, self.database, self.root, self.output_file)
 					temp_dir_class.s3_sync(self.tempdir.path, command_runner=self.mock_runrealcmd)
 		make_newpath.assert_called_once_with(str(self.tempdir.path))
-		self.mock_runrealcmd.assert_called_once_with('s3cmd --verbose --no-preserve --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync ' + str(self.tempdir.path) + ' ' + str(return_path))
+		self.mock_runrealcmd.assert_called_once_with('s3cmd --verbose --no-preserve --delete-removed --exclude="*/*.fastq.gz" --exclude="*/*.bam" --exclude="*/*.sam" --exclude="*/*.bam.bai" --no-check-md5 sync ' + str(self.tempdir.path) + ' ' + str(return_path))
 
 if __name__ == '__main__':
-        unittest.main()
-
+		unittest.main()
