@@ -7,7 +7,7 @@ def read(fname):
 
 setup(
     name='archive_project',
-    version='1.0.1',
+    version='1.0.2',
     description='Tool to back up the data produced by the Pathogen Informatics sequencing pipelines to an S3 server',
 	long_description=read('README.md'),
     packages = find_packages(),
